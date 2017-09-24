@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "desc",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "media",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "stock",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170924102240",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "source",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pager",
+    "microserviceName": "source",
+    "searchEngine": "elasticsearch"
+}
