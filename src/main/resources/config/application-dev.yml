@@ -18,7 +18,7 @@ eureka:
         prefer-ip-address: true
     client:
         service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+            defaultZone: http://admin:${jhipster.registry.password}@192.168.1.209:8761/eureka/
 
 spring:
     profiles:
@@ -33,9 +33,9 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/source?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password:
+        url: jdbc:mysql://139.129.39.128:3306/stock_source?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: stock
+        password: RF7z6tVSdwPe064y
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -125,7 +125,7 @@ jhipster:
         max-age: 1800
     security:
         client-authorization:
-            access-token-uri: http://uaa/oauth/token
+            access-token-uri: http://192.168.1.204:9001/uaa/oauth/token
             token-service-id: uaa
             client-id: internal
             client-secret: internal

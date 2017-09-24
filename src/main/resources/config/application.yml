@@ -109,7 +109,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail:
-        from: source@localhost
+        from: source@10.31.224.228
     swagger:
         default-include-pattern: /api/.*
         title: source API
