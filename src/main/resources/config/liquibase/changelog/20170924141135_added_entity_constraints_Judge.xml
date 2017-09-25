@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity Tracert.
+        Added the constraints for entity Judge.
     -->
-    <changeSet id="20170925000745-2" author="jhipster">
+    <changeSet id="20170924141135-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="info_id"
-                                 baseTableName="tracert"
-                                 constraintName="fk_tracert_info_id"
+                                 baseTableName="judge"
+                                 constraintName="fk_judge_info_id"
                                  referencedColumnNames="id"
                                  referencedTableName="info"/>
 

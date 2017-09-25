@@ -82,9 +82,6 @@ public class SourceQueryService extends QueryService<Source> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Source_.id));
             }
-            if (criteria.getDate() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getDate(), Source_.date));
-            }
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), Source_.title));
             }
@@ -94,8 +91,8 @@ public class SourceQueryService extends QueryService<Source> {
             if (criteria.getUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getUrl(), Source_.url));
             }
-            if (criteria.getStock() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getStock(), Source_.stock));
+            if (criteria.getCreated() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getCreated(), Source_.created));
             }
         }
         return specification;

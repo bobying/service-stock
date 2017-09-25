@@ -1,7 +1,18 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "source",
+            "otherEntityName": "source",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "title"
+        }
+    ],
     "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
         {
             "fieldName": "title",
             "fieldType": "String"
@@ -12,22 +23,14 @@
             "fieldTypeBlobContent": "text"
         },
         {
-            "fieldName": "media",
+            "fieldName": "stock",
             "fieldType": "String"
-        },
-        {
-            "fieldName": "url",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "created",
-            "fieldType": "ZonedDateTime"
         }
     ],
-    "changelogDate": "20170924102240",
+    "changelogDate": "20170925025224",
     "dto": "mapstruct",
     "service": "serviceClass",
-    "entityTableName": "source",
+    "entityTableName": "info",
     "jpaMetamodelFiltering": true,
     "pagination": "pager",
     "microserviceName": "source",

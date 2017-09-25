@@ -34,7 +34,19 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="source_id" type="bigint">
+            <column name="amplitude_day" type="${floatType}">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="highest" type="${floatType}">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="lowest" type="${floatType}">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="info_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

@@ -90,6 +90,9 @@ public class JudgeQueryService extends QueryService<Judge> {
             if (criteria.getIncrease_days() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getIncrease_days(), Judge_.increase_days));
             }
+            if (criteria.getInfoId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getInfoId(), Judge_.info, Info_.id));
+            }
         }
         return specification;
     }

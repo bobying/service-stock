@@ -3,26 +3,30 @@ package com.newdun.cloud.service.dto;
 
 import java.time.ZonedDateTime;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the Source entity.
+ * A DTO for the Info entity.
  */
-public class SourceDTO implements Serializable {
+public class InfoDTO implements Serializable {
 
     private Long id;
+
+    private ZonedDateTime date;
 
     private String title;
 
     @Lob
     private String desc;
 
-    private String media;
+    private String stock;
 
-    private String url;
+    private Long sourceId;
 
-    private ZonedDateTime created;
+    private String sourceTitle;
 
     public Long getId() {
         return id;
@@ -30,6 +34,14 @@ public class SourceDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
     }
 
     public String getTitle() {
@@ -48,28 +60,28 @@ public class SourceDTO implements Serializable {
         this.desc = desc;
     }
 
-    public String getMedia() {
-        return media;
+    public String getStock() {
+        return stock;
     }
 
-    public void setMedia(String media) {
-        this.media = media;
+    public void setStock(String stock) {
+        this.stock = stock;
     }
 
-    public String getUrl() {
-        return url;
+    public Long getSourceId() {
+        return sourceId;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
     }
 
-    public ZonedDateTime getCreated() {
-        return created;
+    public String getSourceTitle() {
+        return sourceTitle;
     }
 
-    public void setCreated(ZonedDateTime created) {
-        this.created = created;
+    public void setSourceTitle(String sourceTitle) {
+        this.sourceTitle = sourceTitle;
     }
 
     @Override
@@ -81,11 +93,11 @@ public class SourceDTO implements Serializable {
             return false;
         }
 
-        SourceDTO sourceDTO = (SourceDTO) o;
-        if(sourceDTO.getId() == null || getId() == null) {
+        InfoDTO infoDTO = (InfoDTO) o;
+        if(infoDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), sourceDTO.getId());
+        return Objects.equals(getId(), infoDTO.getId());
     }
 
     @Override
@@ -95,13 +107,12 @@ public class SourceDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "SourceDTO{" +
+        return "InfoDTO{" +
             "id=" + getId() +
+            ", date='" + getDate() + "'" +
             ", title='" + getTitle() + "'" +
             ", desc='" + getDesc() + "'" +
-            ", media='" + getMedia() + "'" +
-            ", url='" + getUrl() + "'" +
-            ", created='" + getCreated() + "'" +
+            ", stock='" + getStock() + "'" +
             "}";
     }
 }

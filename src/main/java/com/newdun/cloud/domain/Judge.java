@@ -35,6 +35,10 @@ public class Judge implements Serializable {
     @Column(name = "increase_days")
     private Integer increase_days;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Info info;
+
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -81,6 +85,19 @@ public class Judge implements Serializable {
 
     public void setIncrease_days(Integer increase_days) {
         this.increase_days = increase_days;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public Judge info(Info info) {
+        this.info = info;
+        return this;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 

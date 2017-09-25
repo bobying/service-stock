@@ -90,8 +90,17 @@ public class TracertQueryService extends QueryService<Tracert> {
             if (criteria.getIncrease_total() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getIncrease_total(), Tracert_.increase_total));
             }
-            if (criteria.getSourceId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getSourceId(), Tracert_.source, Source_.id));
+            if (criteria.getAmplitude_day() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getAmplitude_day(), Tracert_.amplitude_day));
+            }
+            if (criteria.getHighest() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getHighest(), Tracert_.highest));
+            }
+            if (criteria.getLowest() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLowest(), Tracert_.lowest));
+            }
+            if (criteria.getInfoId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getInfoId(), Tracert_.info, Info_.id));
             }
         }
         return specification;

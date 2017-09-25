@@ -3,6 +3,8 @@ package com.newdun.cloud.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -19,6 +21,10 @@ public class JudgeDTO implements Serializable {
     private Float increase_total;
 
     private Integer increase_days;
+
+    private Long infoId;
+
+    private String infoTitle;
 
     public Long getId() {
         return id;
@@ -50,6 +56,22 @@ public class JudgeDTO implements Serializable {
 
     public void setIncrease_days(Integer increase_days) {
         this.increase_days = increase_days;
+    }
+
+    public Long getInfoId() {
+        return infoId;
+    }
+
+    public void setInfoId(Long infoId) {
+        this.infoId = infoId;
+    }
+
+    public String getInfoTitle() {
+        return infoTitle;
+    }
+
+    public void setInfoTitle(String infoTitle) {
+        this.infoTitle = infoTitle;
     }
 
     @Override

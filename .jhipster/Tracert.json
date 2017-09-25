@@ -2,8 +2,8 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "source",
-            "otherEntityName": "source",
+            "relationshipName": "info",
+            "otherEntityName": "info",
             "relationshipType": "many-to-one",
             "otherEntityField": "title"
         }
@@ -23,6 +23,18 @@
         },
         {
             "fieldName": "increase_total",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "amplitude_day",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "highest",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "lowest",
             "fieldType": "Float"
         }
     ],

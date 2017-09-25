@@ -8,14 +8,14 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Tracert and its DTO TracertDTO.
  */
-@Mapper(componentModel = "spring", uses = {SourceMapper.class, })
+@Mapper(componentModel = "spring", uses = {InfoMapper.class, })
 public interface TracertMapper extends EntityMapper <TracertDTO, Tracert> {
 
-    @Mapping(source = "source.id", target = "sourceId")
-    @Mapping(source = "source.title", target = "sourceTitle")
+    @Mapping(source = "info.id", target = "infoId")
+    @Mapping(source = "info.title", target = "infoTitle")
     TracertDTO toDto(Tracert tracert); 
 
-    @Mapping(source = "sourceId", target = "source")
+    @Mapping(source = "infoId", target = "info")
     Tracert toEntity(TracertDTO tracertDTO); 
     default Tracert fromId(Long id) {
         if (id == null) {

@@ -34,8 +34,17 @@ public class Tracert implements Serializable {
     @Column(name = "increase_total")
     private Float increase_total;
 
+    @Column(name = "amplitude_day")
+    private Float amplitude_day;
+
+    @Column(name = "highest")
+    private Float highest;
+
+    @Column(name = "lowest")
+    private Float lowest;
+
     @ManyToOne
-    private Source source;
+    private Info info;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -85,17 +94,56 @@ public class Tracert implements Serializable {
         this.increase_total = increase_total;
     }
 
-    public Source getSource() {
-        return source;
+    public Float getAmplitude_day() {
+        return amplitude_day;
     }
 
-    public Tracert source(Source source) {
-        this.source = source;
+    public Tracert amplitude_day(Float amplitude_day) {
+        this.amplitude_day = amplitude_day;
         return this;
     }
 
-    public void setSource(Source source) {
-        this.source = source;
+    public void setAmplitude_day(Float amplitude_day) {
+        this.amplitude_day = amplitude_day;
+    }
+
+    public Float getHighest() {
+        return highest;
+    }
+
+    public Tracert highest(Float highest) {
+        this.highest = highest;
+        return this;
+    }
+
+    public void setHighest(Float highest) {
+        this.highest = highest;
+    }
+
+    public Float getLowest() {
+        return lowest;
+    }
+
+    public Tracert lowest(Float lowest) {
+        this.lowest = lowest;
+        return this;
+    }
+
+    public void setLowest(Float lowest) {
+        this.lowest = lowest;
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public Tracert info(Info info) {
+        this.info = info;
+        return this;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -126,6 +174,9 @@ public class Tracert implements Serializable {
             ", days='" + getDays() + "'" +
             ", increase_day='" + getIncrease_day() + "'" +
             ", increase_total='" + getIncrease_total() + "'" +
+            ", amplitude_day='" + getAmplitude_day() + "'" +
+            ", highest='" + getHighest() + "'" +
+            ", lowest='" + getLowest() + "'" +
             "}";
     }
 }

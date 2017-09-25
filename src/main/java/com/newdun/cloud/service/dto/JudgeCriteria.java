@@ -34,6 +34,8 @@ public class JudgeCriteria implements Serializable {
 
     private IntegerFilter increase_days;
 
+    private LongFilter infoId;
+
     public JudgeCriteria() {
     }
 
@@ -69,6 +71,14 @@ public class JudgeCriteria implements Serializable {
         this.increase_days = increase_days;
     }
 
+    public LongFilter getInfoId() {
+        return infoId;
+    }
+
+    public void setInfoId(LongFilter infoId) {
+        this.infoId = infoId;
+    }
+
     @Override
     public String toString() {
         return "JudgeCriteria{" +
@@ -76,6 +86,7 @@ public class JudgeCriteria implements Serializable {
                 (score != null ? "score=" + score + ", " : "") +
                 (increase_total != null ? "increase_total=" + increase_total + ", " : "") +
                 (increase_days != null ? "increase_days=" + increase_days + ", " : "") +
+                (infoId != null ? "infoId=" + infoId + ", " : "") +
             "}";
     }
 

@@ -21,9 +21,15 @@ public class TracertDTO implements Serializable {
 
     private Float increase_total;
 
-    private Long sourceId;
+    private Float amplitude_day;
 
-    private String sourceTitle;
+    private Float highest;
+
+    private Float lowest;
+
+    private Long infoId;
+
+    private String infoTitle;
 
     public Long getId() {
         return id;
@@ -57,20 +63,44 @@ public class TracertDTO implements Serializable {
         this.increase_total = increase_total;
     }
 
-    public Long getSourceId() {
-        return sourceId;
+    public Float getAmplitude_day() {
+        return amplitude_day;
     }
 
-    public void setSourceId(Long sourceId) {
-        this.sourceId = sourceId;
+    public void setAmplitude_day(Float amplitude_day) {
+        this.amplitude_day = amplitude_day;
     }
 
-    public String getSourceTitle() {
-        return sourceTitle;
+    public Float getHighest() {
+        return highest;
     }
 
-    public void setSourceTitle(String sourceTitle) {
-        this.sourceTitle = sourceTitle;
+    public void setHighest(Float highest) {
+        this.highest = highest;
+    }
+
+    public Float getLowest() {
+        return lowest;
+    }
+
+    public void setLowest(Float lowest) {
+        this.lowest = lowest;
+    }
+
+    public Long getInfoId() {
+        return infoId;
+    }
+
+    public void setInfoId(Long infoId) {
+        this.infoId = infoId;
+    }
+
+    public String getInfoTitle() {
+        return infoTitle;
+    }
+
+    public void setInfoTitle(String infoTitle) {
+        this.infoTitle = infoTitle;
     }
 
     @Override
@@ -101,6 +131,9 @@ public class TracertDTO implements Serializable {
             ", days='" + getDays() + "'" +
             ", increase_day='" + getIncrease_day() + "'" +
             ", increase_total='" + getIncrease_total() + "'" +
+            ", amplitude_day='" + getAmplitude_day() + "'" +
+            ", highest='" + getHighest() + "'" +
+            ", lowest='" + getLowest() + "'" +
             "}";
     }
 }

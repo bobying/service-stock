@@ -15,28 +15,28 @@ import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 
 /**
- * Criteria class for the Source entity. This class is used in SourceResource to
+ * Criteria class for the Info entity. This class is used in InfoResource to
  * receive all the possible filtering options from the Http GET request parameters.
  * For example the following could be a valid requests:
- * <code> /sources?id.greaterThan=5&amp;attr1.contains=something&amp;attr2.specified=false</code>
+ * <code> /infos?id.greaterThan=5&amp;attr1.contains=something&amp;attr2.specified=false</code>
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
-public class SourceCriteria implements Serializable {
+public class InfoCriteria implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
     private LongFilter id;
 
+    private ZonedDateTimeFilter date;
+
     private StringFilter title;
 
-    private StringFilter media;
+    private StringFilter stock;
 
-    private StringFilter url;
+    private LongFilter sourceId;
 
-    private ZonedDateTimeFilter created;
-
-    public SourceCriteria() {
+    public InfoCriteria() {
     }
 
     public LongFilter getId() {
@@ -47,6 +47,14 @@ public class SourceCriteria implements Serializable {
         this.id = id;
     }
 
+    public ZonedDateTimeFilter getDate() {
+        return date;
+    }
+
+    public void setDate(ZonedDateTimeFilter date) {
+        this.date = date;
+    }
+
     public StringFilter getTitle() {
         return title;
     }
@@ -55,38 +63,30 @@ public class SourceCriteria implements Serializable {
         this.title = title;
     }
 
-    public StringFilter getMedia() {
-        return media;
+    public StringFilter getStock() {
+        return stock;
     }
 
-    public void setMedia(StringFilter media) {
-        this.media = media;
+    public void setStock(StringFilter stock) {
+        this.stock = stock;
     }
 
-    public StringFilter getUrl() {
-        return url;
+    public LongFilter getSourceId() {
+        return sourceId;
     }
 
-    public void setUrl(StringFilter url) {
-        this.url = url;
-    }
-
-    public ZonedDateTimeFilter getCreated() {
-        return created;
-    }
-
-    public void setCreated(ZonedDateTimeFilter created) {
-        this.created = created;
+    public void setSourceId(LongFilter sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override
     public String toString() {
-        return "SourceCriteria{" +
+        return "InfoCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (date != null ? "date=" + date + ", " : "") +
                 (title != null ? "title=" + title + ", " : "") +
-                (media != null ? "media=" + media + ", " : "") +
-                (url != null ? "url=" + url + ", " : "") +
-                (created != null ? "created=" + created + ", " : "") +
+                (stock != null ? "stock=" + stock + ", " : "") +
+                (sourceId != null ? "sourceId=" + sourceId + ", " : "") +
             "}";
     }
 

@@ -51,9 +51,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {SourceApp.class, SecurityBeanOverrideConfiguration.class})
 public class SourceResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
@@ -66,8 +63,8 @@ public class SourceResourceIntTest {
     private static final String DEFAULT_URL = "AAAAAAAAAA";
     private static final String UPDATED_URL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_STOCK = "AAAAAAAAAA";
-    private static final String UPDATED_STOCK = "BBBBBBBBBB";
+    private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private SourceRepository sourceRepository;
@@ -118,12 +115,11 @@ public class SourceResourceIntTest {
      */
     public static Source createEntity(EntityManager em) {
         Source source = new Source()
-            .date(DEFAULT_DATE)
             .title(DEFAULT_TITLE)
             .desc(DEFAULT_DESC)
             .media(DEFAULT_MEDIA)
             .url(DEFAULT_URL)
-            .stock(DEFAULT_STOCK);
+            .created(DEFAULT_CREATED);
         return source;
     }
 
@@ -149,12 +145,11 @@ public class SourceResourceIntTest {
         List<Source> sourceList = sourceRepository.findAll();
         assertThat(sourceList).hasSize(databaseSizeBeforeCreate + 1);
         Source testSource = sourceList.get(sourceList.size() - 1);
-        assertThat(testSource.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testSource.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testSource.getDesc()).isEqualTo(DEFAULT_DESC);
         assertThat(testSource.getMedia()).isEqualTo(DEFAULT_MEDIA);
         assertThat(testSource.getUrl()).isEqualTo(DEFAULT_URL);
-        assertThat(testSource.getStock()).isEqualTo(DEFAULT_STOCK);
+        assertThat(testSource.getCreated()).isEqualTo(DEFAULT_CREATED);
 
         // Validate the Source in Elasticsearch
         Source sourceEs = sourceSearchRepository.findOne(testSource.getId());
@@ -192,12 +187,11 @@ public class SourceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(source.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].desc").value(hasItem(DEFAULT_DESC.toString())))
             .andExpect(jsonPath("$.[*].media").value(hasItem(DEFAULT_MEDIA.toString())))
             .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
-            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.toString())));
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 
     @Test
@@ -211,79 +205,12 @@ public class SourceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(source.getId().intValue()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.desc").value(DEFAULT_DESC.toString()))
             .andExpect(jsonPath("$.media").value(DEFAULT_MEDIA.toString()))
             .andExpect(jsonPath("$.url").value(DEFAULT_URL.toString()))
-            .andExpect(jsonPath("$.stock").value(DEFAULT_STOCK.toString()));
+            .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)));
     }
-
-    @Test
-    @Transactional
-    public void getAllSourcesByDateIsEqualToSomething() throws Exception {
-        // Initialize the database
-        sourceRepository.saveAndFlush(source);
-
-        // Get all the sourceList where date equals to DEFAULT_DATE
-        defaultSourceShouldBeFound("date.equals=" + DEFAULT_DATE);
-
-        // Get all the sourceList where date equals to UPDATED_DATE
-        defaultSourceShouldNotBeFound("date.equals=" + UPDATED_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSourcesByDateIsInShouldWork() throws Exception {
-        // Initialize the database
-        sourceRepository.saveAndFlush(source);
-
-        // Get all the sourceList where date in DEFAULT_DATE or UPDATED_DATE
-        defaultSourceShouldBeFound("date.in=" + DEFAULT_DATE + "," + UPDATED_DATE);
-
-        // Get all the sourceList where date equals to UPDATED_DATE
-        defaultSourceShouldNotBeFound("date.in=" + UPDATED_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSourcesByDateIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        sourceRepository.saveAndFlush(source);
-
-        // Get all the sourceList where date is not null
-        defaultSourceShouldBeFound("date.specified=true");
-
-        // Get all the sourceList where date is null
-        defaultSourceShouldNotBeFound("date.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllSourcesByDateIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        sourceRepository.saveAndFlush(source);
-
-        // Get all the sourceList where date greater than or equals to DEFAULT_DATE
-        defaultSourceShouldBeFound("date.greaterOrEqualThan=" + DEFAULT_DATE);
-
-        // Get all the sourceList where date greater than or equals to UPDATED_DATE
-        defaultSourceShouldNotBeFound("date.greaterOrEqualThan=" + UPDATED_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSourcesByDateIsLessThanSomething() throws Exception {
-        // Initialize the database
-        sourceRepository.saveAndFlush(source);
-
-        // Get all the sourceList where date less than or equals to DEFAULT_DATE
-        defaultSourceShouldNotBeFound("date.lessThan=" + DEFAULT_DATE);
-
-        // Get all the sourceList where date less than or equals to UPDATED_DATE
-        defaultSourceShouldBeFound("date.lessThan=" + UPDATED_DATE);
-    }
-
 
     @Test
     @Transactional
@@ -404,42 +331,69 @@ public class SourceResourceIntTest {
 
     @Test
     @Transactional
-    public void getAllSourcesByStockIsEqualToSomething() throws Exception {
+    public void getAllSourcesByCreatedIsEqualToSomething() throws Exception {
         // Initialize the database
         sourceRepository.saveAndFlush(source);
 
-        // Get all the sourceList where stock equals to DEFAULT_STOCK
-        defaultSourceShouldBeFound("stock.equals=" + DEFAULT_STOCK);
+        // Get all the sourceList where created equals to DEFAULT_CREATED
+        defaultSourceShouldBeFound("created.equals=" + DEFAULT_CREATED);
 
-        // Get all the sourceList where stock equals to UPDATED_STOCK
-        defaultSourceShouldNotBeFound("stock.equals=" + UPDATED_STOCK);
+        // Get all the sourceList where created equals to UPDATED_CREATED
+        defaultSourceShouldNotBeFound("created.equals=" + UPDATED_CREATED);
     }
 
     @Test
     @Transactional
-    public void getAllSourcesByStockIsInShouldWork() throws Exception {
+    public void getAllSourcesByCreatedIsInShouldWork() throws Exception {
         // Initialize the database
         sourceRepository.saveAndFlush(source);
 
-        // Get all the sourceList where stock in DEFAULT_STOCK or UPDATED_STOCK
-        defaultSourceShouldBeFound("stock.in=" + DEFAULT_STOCK + "," + UPDATED_STOCK);
+        // Get all the sourceList where created in DEFAULT_CREATED or UPDATED_CREATED
+        defaultSourceShouldBeFound("created.in=" + DEFAULT_CREATED + "," + UPDATED_CREATED);
 
-        // Get all the sourceList where stock equals to UPDATED_STOCK
-        defaultSourceShouldNotBeFound("stock.in=" + UPDATED_STOCK);
+        // Get all the sourceList where created equals to UPDATED_CREATED
+        defaultSourceShouldNotBeFound("created.in=" + UPDATED_CREATED);
     }
 
     @Test
     @Transactional
-    public void getAllSourcesByStockIsNullOrNotNull() throws Exception {
+    public void getAllSourcesByCreatedIsNullOrNotNull() throws Exception {
         // Initialize the database
         sourceRepository.saveAndFlush(source);
 
-        // Get all the sourceList where stock is not null
-        defaultSourceShouldBeFound("stock.specified=true");
+        // Get all the sourceList where created is not null
+        defaultSourceShouldBeFound("created.specified=true");
 
-        // Get all the sourceList where stock is null
-        defaultSourceShouldNotBeFound("stock.specified=false");
+        // Get all the sourceList where created is null
+        defaultSourceShouldNotBeFound("created.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllSourcesByCreatedIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        sourceRepository.saveAndFlush(source);
+
+        // Get all the sourceList where created greater than or equals to DEFAULT_CREATED
+        defaultSourceShouldBeFound("created.greaterOrEqualThan=" + DEFAULT_CREATED);
+
+        // Get all the sourceList where created greater than or equals to UPDATED_CREATED
+        defaultSourceShouldNotBeFound("created.greaterOrEqualThan=" + UPDATED_CREATED);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSourcesByCreatedIsLessThanSomething() throws Exception {
+        // Initialize the database
+        sourceRepository.saveAndFlush(source);
+
+        // Get all the sourceList where created less than or equals to DEFAULT_CREATED
+        defaultSourceShouldNotBeFound("created.lessThan=" + DEFAULT_CREATED);
+
+        // Get all the sourceList where created less than or equals to UPDATED_CREATED
+        defaultSourceShouldBeFound("created.lessThan=" + UPDATED_CREATED);
+    }
+
 
     /**
      * Executes the search, and checks that the default entity is returned
@@ -449,12 +403,11 @@ public class SourceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(source.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].desc").value(hasItem(DEFAULT_DESC.toString())))
             .andExpect(jsonPath("$.[*].media").value(hasItem(DEFAULT_MEDIA.toString())))
             .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
-            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.toString())));
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 
     /**
@@ -488,12 +441,11 @@ public class SourceResourceIntTest {
         // Update the source
         Source updatedSource = sourceRepository.findOne(source.getId());
         updatedSource
-            .date(UPDATED_DATE)
             .title(UPDATED_TITLE)
             .desc(UPDATED_DESC)
             .media(UPDATED_MEDIA)
             .url(UPDATED_URL)
-            .stock(UPDATED_STOCK);
+            .created(UPDATED_CREATED);
         SourceDTO sourceDTO = sourceMapper.toDto(updatedSource);
 
         restSourceMockMvc.perform(put("/api/sources")
@@ -505,12 +457,11 @@ public class SourceResourceIntTest {
         List<Source> sourceList = sourceRepository.findAll();
         assertThat(sourceList).hasSize(databaseSizeBeforeUpdate);
         Source testSource = sourceList.get(sourceList.size() - 1);
-        assertThat(testSource.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testSource.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testSource.getDesc()).isEqualTo(UPDATED_DESC);
         assertThat(testSource.getMedia()).isEqualTo(UPDATED_MEDIA);
         assertThat(testSource.getUrl()).isEqualTo(UPDATED_URL);
-        assertThat(testSource.getStock()).isEqualTo(UPDATED_STOCK);
+        assertThat(testSource.getCreated()).isEqualTo(UPDATED_CREATED);
 
         // Validate the Source in Elasticsearch
         Source sourceEs = sourceSearchRepository.findOne(testSource.getId());
@@ -570,12 +521,11 @@ public class SourceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(source.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].desc").value(hasItem(DEFAULT_DESC.toString())))
             .andExpect(jsonPath("$.[*].media").value(hasItem(DEFAULT_MEDIA.toString())))
             .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())))
-            .andExpect(jsonPath("$.[*].stock").value(hasItem(DEFAULT_STOCK.toString())));
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 
     @Test

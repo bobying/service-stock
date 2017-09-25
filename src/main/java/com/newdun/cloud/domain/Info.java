@@ -10,19 +10,22 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
- * A Source.
+ * A Info.
  */
 @Entity
-@Table(name = "source")
+@Table(name = "info")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "source")
-public class Source implements Serializable {
+@Document(indexName = "info")
+public class Info implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "jhi_date")
+    private ZonedDateTime date;
 
     @Column(name = "title")
     private String title;
@@ -31,14 +34,11 @@ public class Source implements Serializable {
     @Column(name = "jhi_desc")
     private String desc;
 
-    @Column(name = "media")
-    private String media;
+    @Column(name = "stock")
+    private String stock;
 
-    @Column(name = "url")
-    private String url;
-
-    @Column(name = "created")
-    private ZonedDateTime created;
+    @ManyToOne
+    private Source source;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -49,11 +49,24 @@ public class Source implements Serializable {
         this.id = id;
     }
 
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public Info date(ZonedDateTime date) {
+        this.date = date;
+        return this;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public Source title(String title) {
+    public Info title(String title) {
         this.title = title;
         return this;
     }
@@ -66,7 +79,7 @@ public class Source implements Serializable {
         return desc;
     }
 
-    public Source desc(String desc) {
+    public Info desc(String desc) {
         this.desc = desc;
         return this;
     }
@@ -75,43 +88,30 @@ public class Source implements Serializable {
         this.desc = desc;
     }
 
-    public String getMedia() {
-        return media;
+    public String getStock() {
+        return stock;
     }
 
-    public Source media(String media) {
-        this.media = media;
+    public Info stock(String stock) {
+        this.stock = stock;
         return this;
     }
 
-    public void setMedia(String media) {
-        this.media = media;
+    public void setStock(String stock) {
+        this.stock = stock;
     }
 
-    public String getUrl() {
-        return url;
+    public Source getSource() {
+        return source;
     }
 
-    public Source url(String url) {
-        this.url = url;
+    public Info source(Source source) {
+        this.source = source;
         return this;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public ZonedDateTime getCreated() {
-        return created;
-    }
-
-    public Source created(ZonedDateTime created) {
-        this.created = created;
-        return this;
-    }
-
-    public void setCreated(ZonedDateTime created) {
-        this.created = created;
+    public void setSource(Source source) {
+        this.source = source;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 
@@ -123,11 +123,11 @@ public class Source implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Source source = (Source) o;
-        if (source.getId() == null || getId() == null) {
+        Info info = (Info) o;
+        if (info.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), source.getId());
+        return Objects.equals(getId(), info.getId());
     }
 
     @Override
@@ -137,13 +137,12 @@ public class Source implements Serializable {
 
     @Override
     public String toString() {
-        return "Source{" +
+        return "Info{" +
             "id=" + getId() +
+            ", date='" + getDate() + "'" +
             ", title='" + getTitle() + "'" +
             ", desc='" + getDesc() + "'" +
-            ", media='" + getMedia() + "'" +
-            ", url='" + getUrl() + "'" +
-            ", created='" + getCreated() + "'" +
+            ", stock='" + getStock() + "'" +
             "}";
     }
 }

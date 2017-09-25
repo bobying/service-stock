@@ -15,29 +15,36 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Judge.
+        Added the entity Info.
     -->
-    <changeSet id="20170924141135-1" author="jhipster">
-        <createTable tableName="judge">
+    <changeSet id="20170925025224-1" author="jhipster">
+        <createTable tableName="info">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="score" type="integer">
+            <column name="jhi_date" type="timestamp">
                 <constraints nullable="true" />
             </column>
 
-            <column name="increase_total" type="${floatType}">
+            <column name="title" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="increase_days" type="integer">
+            <column name="jhi_desc" type="clob">
                 <constraints nullable="true" />
             </column>
-            <column name="info_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+
+            <column name="stock" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
+
+            <column name="source_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="info" columnName="jhi_date" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

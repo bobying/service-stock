@@ -34,7 +34,13 @@ public class TracertCriteria implements Serializable {
 
     private FloatFilter increase_total;
 
-    private LongFilter sourceId;
+    private FloatFilter amplitude_day;
+
+    private FloatFilter highest;
+
+    private FloatFilter lowest;
+
+    private LongFilter infoId;
 
     public TracertCriteria() {
     }
@@ -71,12 +77,36 @@ public class TracertCriteria implements Serializable {
         this.increase_total = increase_total;
     }
 
-    public LongFilter getSourceId() {
-        return sourceId;
+    public FloatFilter getAmplitude_day() {
+        return amplitude_day;
     }
 
-    public void setSourceId(LongFilter sourceId) {
-        this.sourceId = sourceId;
+    public void setAmplitude_day(FloatFilter amplitude_day) {
+        this.amplitude_day = amplitude_day;
+    }
+
+    public FloatFilter getHighest() {
+        return highest;
+    }
+
+    public void setHighest(FloatFilter highest) {
+        this.highest = highest;
+    }
+
+    public FloatFilter getLowest() {
+        return lowest;
+    }
+
+    public void setLowest(FloatFilter lowest) {
+        this.lowest = lowest;
+    }
+
+    public LongFilter getInfoId() {
+        return infoId;
+    }
+
+    public void setInfoId(LongFilter infoId) {
+        this.infoId = infoId;
     }
 
     @Override
@@ -86,7 +116,10 @@ public class TracertCriteria implements Serializable {
                 (days != null ? "days=" + days + ", " : "") +
                 (increase_day != null ? "increase_day=" + increase_day + ", " : "") +
                 (increase_total != null ? "increase_total=" + increase_total + ", " : "") +
-                (sourceId != null ? "sourceId=" + sourceId + ", " : "") +
+                (amplitude_day != null ? "amplitude_day=" + amplitude_day + ", " : "") +
+                (highest != null ? "highest=" + highest + ", " : "") +
+                (lowest != null ? "lowest=" + lowest + ", " : "") +
+                (infoId != null ? "infoId=" + infoId + ", " : "") +
             "}";
     }
 
