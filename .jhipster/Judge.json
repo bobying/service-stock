@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "source",
+            "otherEntityName": "source",
+            "relationshipType": "one-to-one",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "judge"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "score",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": "-10",
+            "fieldValidateRulesMax": "10"
+        },
+        {
+            "fieldName": "increase_total",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "increase_days",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170924141135",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "judge",
+    "jpaMetamodelFiltering": true,
+    "pagination": "pager",
+    "microserviceName": "source",
+    "searchEngine": "elasticsearch"
+}

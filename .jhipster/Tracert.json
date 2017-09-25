@@ -1,0 +1,37 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "source",
+            "otherEntityName": "source",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "title"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "days",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "increase_day",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "increase_total",
+            "fieldType": "Float"
+        }
+    ],
+    "changelogDate": "20170925000745",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "tracert",
+    "jpaMetamodelFiltering": true,
+    "pagination": "no",
+    "microserviceName": "source",
+    "searchEngine": "elasticsearch"
+}
