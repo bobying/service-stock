@@ -1,14 +1,6 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipName": "source",
-            "otherEntityName": "source",
-            "relationshipType": "one-to-one",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "judge"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "score",
