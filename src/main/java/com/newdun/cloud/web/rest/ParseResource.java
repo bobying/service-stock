@@ -120,7 +120,7 @@ public class ParseResource {
         			tracertDTO.setDays(diffDays(curdate, begin));
         			tracertDTO.setHighest(Float.valueOf(hq.get(6)));
         			tracertDTO.setLowest(Float.valueOf(hq.get(5)));
-        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(9)));
+        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(9).replace("%", "")));
         			tracertDTO.setIncrease_total((tracertDTO.getHighest() - beginPrice) / beginPrice * 100);
         			tracertDTO.setInfoId(info.getId());
 					tracertService.save(tracertDTO);
