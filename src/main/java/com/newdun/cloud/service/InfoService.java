@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
+import java.util.List;
+
 /**
  * Service Implementation for managing Info.
  */
@@ -50,6 +52,14 @@ public class InfoService {
         return result;
     }
 
+    public InfoDTO save(Info info) {
+        log.debug("Request to save Info : {}", info);
+        info = infoRepository.save(info);
+        InfoDTO result = infoMapper.toDto(info);
+        infoSearchRepository.save(info);
+        return result;
+    }
+
     /**
      *  Get all the infos.
      *
@@ -61,6 +71,12 @@ public class InfoService {
         log.debug("Request to get all Infos");
         return infoRepository.findAll(pageable)
             .map(infoMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Info> findAll() {
+        log.debug("Request to get all Infos");
+        return infoRepository.findAll();
     }
 
     /**
