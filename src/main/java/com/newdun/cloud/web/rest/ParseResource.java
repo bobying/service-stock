@@ -147,7 +147,7 @@ public class ParseResource {
         	judgeDTO.setIncrease_total((maxPrice - beginPrice) / beginPrice * 100);
         	judgeDTO.setInfoId(info.getId());
         	judgeDTO.setId(info.getId());
-        	judgeDTO.setScore((int)(judgeDTO.getIncrease_total() / 5));
+        	judgeDTO.setScore((int)(float)(judgeDTO.getIncrease_total()));
         	judgeService.save(judgeDTO);
         }
         return ResponseEntity.ok().build();

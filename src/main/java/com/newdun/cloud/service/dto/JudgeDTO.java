@@ -1,7 +1,6 @@
 package com.newdun.cloud.service.dto;
 
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,8 +13,6 @@ public class JudgeDTO implements Serializable {
 
     private Long id;
 
-    @Min(value = -10)
-    @Max(value = 10)
     private Integer score;
 
     private Float increase_total;

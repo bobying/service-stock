@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -56,7 +55,7 @@ public class JudgeResource {
      */
     @PostMapping("/judges")
     @Timed
-    public ResponseEntity<JudgeDTO> createJudge(@Valid @RequestBody JudgeDTO judgeDTO) throws URISyntaxException {
+    public ResponseEntity<JudgeDTO> createJudge(@RequestBody JudgeDTO judgeDTO) throws URISyntaxException {
         log.debug("REST request to save Judge : {}", judgeDTO);
         if (judgeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new judge cannot already have an ID")).body(null);
@@ -78,7 +77,7 @@ public class JudgeResource {
      */
     @PutMapping("/judges")
     @Timed
-    public ResponseEntity<JudgeDTO> updateJudge(@Valid @RequestBody JudgeDTO judgeDTO) throws URISyntaxException {
+    public ResponseEntity<JudgeDTO> updateJudge(@RequestBody JudgeDTO judgeDTO) throws URISyntaxException {
         log.debug("REST request to update Judge : {}", judgeDTO);
         if (judgeDTO.getId() == null) {
             return createJudge(judgeDTO);

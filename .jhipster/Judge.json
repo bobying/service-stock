@@ -14,12 +14,6 @@
         {
             "fieldName": "score",
             "fieldType": "Integer",
-            "fieldValidateRules": [
-                "min",
-                "max"
-            ],
-            "fieldValidateRulesMin": "-10",
-            "fieldValidateRulesMax": "10"
         },
         {
             "fieldName": "increase_total",
