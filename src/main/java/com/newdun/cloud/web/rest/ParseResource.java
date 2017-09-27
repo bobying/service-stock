@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -66,7 +66,7 @@ public class ParseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      * @throws ParseException 
      */
-    @PostMapping("/infos/parse")
+    @GetMapping("/infos/parse")
     @Timed
     public ResponseEntity<String> parseInfo() throws URISyntaxException, ParseException {
         log.debug("REST request to parse Info : {}");
