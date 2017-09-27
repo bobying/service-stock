@@ -79,44 +79,14 @@ public class StockService {
 						StringWriter writer = new StringWriter();
 						IOUtils.copy(content, writer, Charset.forName("GBK"));
 						String theString = writer.toString();
-//                		content = new String(content.getBytes("gbk"), "utf-8");
                 		return super.readValue(theString, valueType);
                 	}
                 });
                 jsonConverter.setSupportedMediaTypes(ImmutableList.of(
                 		new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET),
                 		new MediaType("application", "x-javascript", Charset.forName("GBK"))));
-//            } else if (converter instanceof StringHttpMessageConverter) {
-//            	StringHttpMessageConverter stringConverter = (StringHttpMessageConverter) converter;
-//            	stringConverter.setDefaultCharset(Charset.forName("UTF-8"));
-//            	stringConverter.setSupportedMediaTypes(ImmutableList.of(
-//                		new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET),
-//                		new MediaType("application", "x-javascript", Charset.forName("GBK"))));
             }
         }
-        
-//        ObjectMapper objectMapper;
-//        objectMapper.readValue(inputMessage.getBody(), javaType);
-//
-//        HttpMessageConverter<?> converterTarget = null;
-//        for (HttpMessageConverter<?> item : converters) {
-//            if (item.getClass() == StringHttpMessageConverter.class) {
-//                converterTarget = item;
-//                break;
-//            }
-//        }
-//
-//        if (converterTarget != null) {
-//        	converters.remove(converterTarget);
-//        }
-//        HttpMessageConverter<?> converter = new StringHttpMessageConverter(StandardCharsets.UTF_8) {
-//        	
-//        	@Override
-//			public boolean canRead(Class<?> clazz, MediaType mediaType) {
-//        		return true;
-//        	}
-//        };
-//        converters.add(1, converter);
         
         ResponseEntity<StockResult[]> responseEntity = restTemplate.getForEntity(uri, StockResult[].class, params);
         StockResult[] result = responseEntity.getBody();

@@ -4,6 +4,8 @@ import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -100,11 +102,12 @@ public class ParseResource {
         	Date begin = Date.from(info.getDate().toInstant());
         	Calendar c = Calendar.getInstance();
         	c.setTime(begin);
-        	c.add(Calendar.DATE, 1);
+        	c.add(Calendar.DATE, 30);
         	Date end = c.getTime();
         	Float beginPrice = 0.0F;
         	Float maxPrice = 0.0F;
         	Integer increase_days = 0;
+        	Integer days = 0;        	
         	
         	StockResult result = stockService.get(stock, begin, end);
         	if (result.getStatus() == 0) {
@@ -113,15 +116,20 @@ public class ParseResource {
         			List<String> hq = iterator.next();
         			TracertDTO tracertDTO = new TracertDTO();
         			if (beginPrice < 0.01F) {
-        				beginPrice = Float.valueOf(hq.get(2));
+        				beginPrice = Float.valueOf(hq.get(1));
         			}
-        			DateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.CHINESE);
+        			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
         			Date curdate = format.parse(hq.get(0));
-        			tracertDTO.setDays(diffDays(curdate, begin));
+        		    ZoneId zone = ZoneId.systemDefault();
+        		    LocalDateTime localDateTime = LocalDateTime.ofInstant(curdate.toInstant(), zone);
+        		    LocalDate localDate = localDateTime.toLocalDate();
+        			tracertDTO.setDate(localDate);
+        			tracertDTO.setDays(days ++);
         			tracertDTO.setHighest(Float.valueOf(hq.get(6)));
         			tracertDTO.setLowest(Float.valueOf(hq.get(5)));
-        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(9).replace("%", "")));
+        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(4).replace("%", "")));
         			tracertDTO.setIncrease_total((tracertDTO.getHighest() - beginPrice) / beginPrice * 100);
+        			tracertDTO.setAmplitude_day((tracertDTO.getHighest()-tracertDTO.getLowest()) / Float.valueOf(hq.get(1)) * 100);
         			tracertDTO.setInfoId(info.getId());
 					tracertService.save(tracertDTO);
 					
@@ -143,9 +151,9 @@ public class ParseResource {
         return ResponseEntity.ok().build();
     }
     
-    public static int diffDays(Date date1,Date date2)
+    public static int diffDays(Date curdate,Date degindate)
     {
-        int days = (int) ((date2.getTime() - date1.getTime()) / (1000*3600*24));
+        int days = (int) ((curdate.getTime() - degindate.getTime()) / (1000*3600*24));
         return days;
     }
 

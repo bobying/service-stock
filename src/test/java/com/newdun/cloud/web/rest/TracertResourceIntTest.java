@@ -29,6 +29,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,6 +64,9 @@ public class TracertResourceIntTest {
 
     private static final Float DEFAULT_LOWEST = 1F;
     private static final Float UPDATED_LOWEST = 2F;
+
+    private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private TracertRepository tracertRepository;
@@ -117,7 +122,8 @@ public class TracertResourceIntTest {
             .increase_total(DEFAULT_INCREASE_TOTAL)
             .amplitude_day(DEFAULT_AMPLITUDE_DAY)
             .highest(DEFAULT_HIGHEST)
-            .lowest(DEFAULT_LOWEST);
+            .lowest(DEFAULT_LOWEST)
+            .date(DEFAULT_DATE);
         return tracert;
     }
 
@@ -149,6 +155,7 @@ public class TracertResourceIntTest {
         assertThat(testTracert.getAmplitude_day()).isEqualTo(DEFAULT_AMPLITUDE_DAY);
         assertThat(testTracert.getHighest()).isEqualTo(DEFAULT_HIGHEST);
         assertThat(testTracert.getLowest()).isEqualTo(DEFAULT_LOWEST);
+        assertThat(testTracert.getDate()).isEqualTo(DEFAULT_DATE);
 
         // Validate the Tracert in Elasticsearch
         Tracert tracertEs = tracertSearchRepository.findOne(testTracert.getId());
@@ -191,7 +198,8 @@ public class TracertResourceIntTest {
             .andExpect(jsonPath("$.[*].increase_total").value(hasItem(DEFAULT_INCREASE_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].amplitude_day").value(hasItem(DEFAULT_AMPLITUDE_DAY.doubleValue())))
             .andExpect(jsonPath("$.[*].highest").value(hasItem(DEFAULT_HIGHEST.doubleValue())))
-            .andExpect(jsonPath("$.[*].lowest").value(hasItem(DEFAULT_LOWEST.doubleValue())));
+            .andExpect(jsonPath("$.[*].lowest").value(hasItem(DEFAULT_LOWEST.doubleValue())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
     @Test
@@ -210,7 +218,8 @@ public class TracertResourceIntTest {
             .andExpect(jsonPath("$.increase_total").value(DEFAULT_INCREASE_TOTAL.doubleValue()))
             .andExpect(jsonPath("$.amplitude_day").value(DEFAULT_AMPLITUDE_DAY.doubleValue()))
             .andExpect(jsonPath("$.highest").value(DEFAULT_HIGHEST.doubleValue()))
-            .andExpect(jsonPath("$.lowest").value(DEFAULT_LOWEST.doubleValue()));
+            .andExpect(jsonPath("$.lowest").value(DEFAULT_LOWEST.doubleValue()))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
     }
 
     @Test
@@ -474,6 +483,72 @@ public class TracertResourceIntTest {
         defaultTracertShouldNotBeFound("lowest.specified=false");
     }
 
+    @Test
+    @Transactional
+    public void getAllTracertsByDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tracertRepository.saveAndFlush(tracert);
+
+        // Get all the tracertList where date equals to DEFAULT_DATE
+        defaultTracertShouldBeFound("date.equals=" + DEFAULT_DATE);
+
+        // Get all the tracertList where date equals to UPDATED_DATE
+        defaultTracertShouldNotBeFound("date.equals=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTracertsByDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        tracertRepository.saveAndFlush(tracert);
+
+        // Get all the tracertList where date in DEFAULT_DATE or UPDATED_DATE
+        defaultTracertShouldBeFound("date.in=" + DEFAULT_DATE + "," + UPDATED_DATE);
+
+        // Get all the tracertList where date equals to UPDATED_DATE
+        defaultTracertShouldNotBeFound("date.in=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTracertsByDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tracertRepository.saveAndFlush(tracert);
+
+        // Get all the tracertList where date is not null
+        defaultTracertShouldBeFound("date.specified=true");
+
+        // Get all the tracertList where date is null
+        defaultTracertShouldNotBeFound("date.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTracertsByDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        tracertRepository.saveAndFlush(tracert);
+
+        // Get all the tracertList where date greater than or equals to DEFAULT_DATE
+        defaultTracertShouldBeFound("date.greaterOrEqualThan=" + DEFAULT_DATE);
+
+        // Get all the tracertList where date greater than or equals to UPDATED_DATE
+        defaultTracertShouldNotBeFound("date.greaterOrEqualThan=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTracertsByDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        tracertRepository.saveAndFlush(tracert);
+
+        // Get all the tracertList where date less than or equals to DEFAULT_DATE
+        defaultTracertShouldNotBeFound("date.lessThan=" + DEFAULT_DATE);
+
+        // Get all the tracertList where date less than or equals to UPDATED_DATE
+        defaultTracertShouldBeFound("date.lessThan=" + UPDATED_DATE);
+    }
+
+
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -487,7 +562,8 @@ public class TracertResourceIntTest {
             .andExpect(jsonPath("$.[*].increase_total").value(hasItem(DEFAULT_INCREASE_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].amplitude_day").value(hasItem(DEFAULT_AMPLITUDE_DAY.doubleValue())))
             .andExpect(jsonPath("$.[*].highest").value(hasItem(DEFAULT_HIGHEST.doubleValue())))
-            .andExpect(jsonPath("$.[*].lowest").value(hasItem(DEFAULT_LOWEST.doubleValue())));
+            .andExpect(jsonPath("$.[*].lowest").value(hasItem(DEFAULT_LOWEST.doubleValue())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
     /**
@@ -526,7 +602,8 @@ public class TracertResourceIntTest {
             .increase_total(UPDATED_INCREASE_TOTAL)
             .amplitude_day(UPDATED_AMPLITUDE_DAY)
             .highest(UPDATED_HIGHEST)
-            .lowest(UPDATED_LOWEST);
+            .lowest(UPDATED_LOWEST)
+            .date(UPDATED_DATE);
         TracertDTO tracertDTO = tracertMapper.toDto(updatedTracert);
 
         restTracertMockMvc.perform(put("/api/tracerts")
@@ -544,6 +621,7 @@ public class TracertResourceIntTest {
         assertThat(testTracert.getAmplitude_day()).isEqualTo(UPDATED_AMPLITUDE_DAY);
         assertThat(testTracert.getHighest()).isEqualTo(UPDATED_HIGHEST);
         assertThat(testTracert.getLowest()).isEqualTo(UPDATED_LOWEST);
+        assertThat(testTracert.getDate()).isEqualTo(UPDATED_DATE);
 
         // Validate the Tracert in Elasticsearch
         Tracert tracertEs = tracertSearchRepository.findOne(testTracert.getId());
@@ -608,7 +686,8 @@ public class TracertResourceIntTest {
             .andExpect(jsonPath("$.[*].increase_total").value(hasItem(DEFAULT_INCREASE_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].amplitude_day").value(hasItem(DEFAULT_AMPLITUDE_DAY.doubleValue())))
             .andExpect(jsonPath("$.[*].highest").value(hasItem(DEFAULT_HIGHEST.doubleValue())))
-            .andExpect(jsonPath("$.[*].lowest").value(hasItem(DEFAULT_LOWEST.doubleValue())));
+            .andExpect(jsonPath("$.[*].lowest").value(hasItem(DEFAULT_LOWEST.doubleValue())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
     }
 
     @Test

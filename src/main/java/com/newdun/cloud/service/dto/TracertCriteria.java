@@ -10,7 +10,7 @@ import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 
 
-
+import io.github.jhipster.service.filter.LocalDateFilter;
 
 
 
@@ -39,6 +39,8 @@ public class TracertCriteria implements Serializable {
     private FloatFilter highest;
 
     private FloatFilter lowest;
+
+    private LocalDateFilter date;
 
     private LongFilter infoId;
 
@@ -101,6 +103,14 @@ public class TracertCriteria implements Serializable {
         this.lowest = lowest;
     }
 
+    public LocalDateFilter getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateFilter date) {
+        this.date = date;
+    }
+
     public LongFilter getInfoId() {
         return infoId;
     }
@@ -119,6 +129,7 @@ public class TracertCriteria implements Serializable {
                 (amplitude_day != null ? "amplitude_day=" + amplitude_day + ", " : "") +
                 (highest != null ? "highest=" + highest + ", " : "") +
                 (lowest != null ? "lowest=" + lowest + ", " : "") +
+                (date != null ? "date=" + date + ", " : "") +
                 (infoId != null ? "infoId=" + infoId + ", " : "") +
             "}";
     }

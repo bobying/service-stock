@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -42,6 +43,9 @@ public class Tracert implements Serializable {
 
     @Column(name = "lowest")
     private Float lowest;
+
+    @Column(name = "jhi_date")
+    private LocalDate date;
 
     @ManyToOne
     private Info info;
@@ -133,6 +137,19 @@ public class Tracert implements Serializable {
         this.lowest = lowest;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public Tracert date(LocalDate date) {
+        this.date = date;
+        return this;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public Info getInfo() {
         return info;
     }
@@ -177,6 +194,7 @@ public class Tracert implements Serializable {
             ", amplitude_day='" + getAmplitude_day() + "'" +
             ", highest='" + getHighest() + "'" +
             ", lowest='" + getLowest() + "'" +
+            ", date='" + getDate() + "'" +
             "}";
     }
 }

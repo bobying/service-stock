@@ -1,6 +1,7 @@
 package com.newdun.cloud.service.dto;
 
 
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,6 +27,8 @@ public class TracertDTO implements Serializable {
     private Float highest;
 
     private Float lowest;
+
+    private LocalDate date;
 
     private Long infoId;
 
@@ -87,6 +90,14 @@ public class TracertDTO implements Serializable {
         this.lowest = lowest;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public Long getInfoId() {
         return infoId;
     }
@@ -134,6 +145,7 @@ public class TracertDTO implements Serializable {
             ", amplitude_day='" + getAmplitude_day() + "'" +
             ", highest='" + getHighest() + "'" +
             ", lowest='" + getLowest() + "'" +
+            ", date='" + getDate() + "'" +
             "}";
     }
 }

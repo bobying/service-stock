@@ -1,6 +1,6 @@
 package com.newdun.cloud.service;
 
-
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -98,6 +98,9 @@ public class TracertQueryService extends QueryService<Tracert> {
             }
             if (criteria.getLowest() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLowest(), Tracert_.lowest));
+            }
+            if (criteria.getDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDate(), Tracert_.date));
             }
             if (criteria.getInfoId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getInfoId(), Tracert_.info, Info_.id));
