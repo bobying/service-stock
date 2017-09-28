@@ -12,10 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
-import java.util.List;
 
 /**
  * Service Implementation for managing Info.
@@ -52,14 +54,6 @@ public class InfoService {
         return result;
     }
 
-    public InfoDTO save(Info info) {
-        log.debug("Request to save Info : {}", info);
-        info = infoRepository.save(info);
-        InfoDTO result = infoMapper.toDto(info);
-        infoSearchRepository.save(info);
-        return result;
-    }
-
     /**
      *  Get all the infos.
      *
@@ -73,10 +67,19 @@ public class InfoService {
             .map(infoMapper::toDto);
     }
 
-    @Transactional(readOnly = true)
-    public List<Info> findAll() {
-        log.debug("Request to get all Infos");
-        return infoRepository.findAll();
+
+    /**
+     *  get all the infos where Judge is null.
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<InfoDTO> findAllWhereJudgeIsNull() {
+        log.debug("Request to get all infos where Judge is null");
+        return StreamSupport
+            .stream(infoRepository.findAll().spliterator(), false)
+            .filter(info -> info.getJudge() == null)
+            .map(infoMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.newdun.cloud.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -39,6 +40,10 @@ public class Info implements Serializable {
 
     @ManyToOne
     private Source source;
+
+    @OneToOne(mappedBy = "info")
+    @JsonIgnore
+    private Judge judge;
 
     // jhipster-needle-entity-add-field - Jhipster will add fields here, do not remove
     public Long getId() {
@@ -112,6 +117,19 @@ public class Info implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public Judge getJudge() {
+        return judge;
+    }
+
+    public Info judge(Judge judge) {
+        this.judge = judge;
+        return this;
+    }
+
+    public void setJudge(Judge judge) {
+        this.judge = judge;
     }
     // jhipster-needle-entity-add-getters-setters - Jhipster will add getters and setters here, do not remove
 

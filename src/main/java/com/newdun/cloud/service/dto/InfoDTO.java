@@ -28,6 +28,14 @@ public class InfoDTO implements Serializable {
 
     private String sourceTitle;
 
+    private Long judgeId;
+
+    private int increaseDays;
+    
+    private Float increaseTotal;
+    
+    private int judgeScore;
+    
     public Long getId() {
         return id;
     }
@@ -115,4 +123,36 @@ public class InfoDTO implements Serializable {
             ", stock='" + getStock() + "'" +
             "}";
     }
+
+	public int getIncreaseDays() {
+		return increaseDays;
+	}
+
+	public void setIncreaseDays(int increaseDays) {
+		this.increaseDays = increaseDays;
+	}
+
+	public Float getIncreaseTotal() {
+		return increaseTotal;
+	}
+
+	public void setIncreaseTotal(Float increaseTotal) {
+		this.increaseTotal = increaseTotal;
+	}
+
+	public int getJudgeScore() {
+		return judgeScore;
+	}
+
+	public void setJudgeScore(int judgeScore) {
+		this.judgeScore = judgeScore;
+	}
+
+	public Long getJudgeId() {
+		return judgeId;
+	}
+
+	public void setJudgeId(Long judgeId) {
+		this.judgeId = judgeId;
+	}
 }

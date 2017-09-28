@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ import com.newdun.cloud.service.InfoService;
 import com.newdun.cloud.service.JudgeService;
 import com.newdun.cloud.service.StockService;
 import com.newdun.cloud.service.TracertService;
+import com.newdun.cloud.service.dto.InfoDTO;
 import com.newdun.cloud.service.dto.JudgeDTO;
 import com.newdun.cloud.service.dto.TracertDTO;
 
@@ -70,10 +72,11 @@ public class ParseResource {
     @Timed
     public ResponseEntity<String> parseInfo() throws URISyntaxException, ParseException {
         log.debug("REST request to parse Info : {}");
-        List<Info> infos = infoService.findAll();
-        Iterator<Info> it = infos.iterator();
+        Page<InfoDTO> pages = infoService.findAll(null);
+        List<InfoDTO> infos = pages.getContent();
+        Iterator<InfoDTO> it = infos.iterator();
         while (it.hasNext()) {
-        	Info info = it.next();
+        	InfoDTO info = it.next();
         	String title = info.getTitle();
         	
         	// 转化title的日期和股票
@@ -108,6 +111,7 @@ public class ParseResource {
         	Float maxPrice = 0.0F;
         	Integer increase_days = 0;
         	Integer days = 0;        	
+        	Boolean decrease = false;
         	
         	StockResult result = stockService.get(stock, begin, end);
         	if (result.getStatus() == 0) {
@@ -135,9 +139,7 @@ public class ParseResource {
 					
 					if (tracertDTO.getHighest() > maxPrice) {
 						maxPrice = tracertDTO.getHighest();
-					}
-					if (tracertDTO.getIncrease_day() > 0.0F) {
-						increase_days ++;
+						increase_days = days; 
 					}
         		}
         	}

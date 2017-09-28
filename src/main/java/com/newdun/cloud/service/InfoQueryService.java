@@ -94,6 +94,9 @@ public class InfoQueryService extends QueryService<Info> {
             if (criteria.getSourceId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getSourceId(), Info_.source, Source_.id));
             }
+            if (criteria.getJudgeId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getJudgeId(), Info_.judge, Judge_.id));
+            }
         }
         return specification;
     }

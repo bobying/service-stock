@@ -6,6 +6,13 @@
             "otherEntityName": "source",
             "relationshipType": "many-to-one",
             "otherEntityField": "title"
+        },
+        {
+            "relationshipName": "judge",
+            "otherEntityName": "judge",
+            "relationshipType": "one-to-one",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "info"
         }
     ],
     "fields": [

@@ -36,6 +36,8 @@ public class InfoCriteria implements Serializable {
 
     private LongFilter sourceId;
 
+    private LongFilter judgeId;
+
     public InfoCriteria() {
     }
 
@@ -79,6 +81,14 @@ public class InfoCriteria implements Serializable {
         this.sourceId = sourceId;
     }
 
+    public LongFilter getJudgeId() {
+        return judgeId;
+    }
+
+    public void setJudgeId(LongFilter judgeId) {
+        this.judgeId = judgeId;
+    }
+
     @Override
     public String toString() {
         return "InfoCriteria{" +
@@ -87,6 +97,7 @@ public class InfoCriteria implements Serializable {
                 (title != null ? "title=" + title + ", " : "") +
                 (stock != null ? "stock=" + stock + ", " : "") +
                 (sourceId != null ? "sourceId=" + sourceId + ", " : "") +
+                (judgeId != null ? "judgeId=" + judgeId + ", " : "") +
             "}";
     }
 
