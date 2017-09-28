@@ -77,80 +77,84 @@ public class ParseResource {
         Iterator<InfoDTO> it = infos.iterator();
         while (it.hasNext()) {
         	InfoDTO info = it.next();
-        	String title = info.getTitle();
         	
-        	// 转化title的日期和股票
-        	Pattern pattern = Pattern.compile("\\D*(\\d{4})[\\.|年](\\d+)[\\.|月](\\d+)\\D+(\\d+).*");
-
-        	Matcher m = pattern.matcher(title);
-        	m.matches();
-            log.debug("info title：" + title);
-            log.debug("group 1：" + m.group(1));
-            log.debug("group 2：" + m.group(2));
-            log.debug("group 3：" + m.group(3));
-            log.debug("group 4：" + m.group(4));
-        	Integer year = Integer.valueOf(m.group(1));
-        	Integer month = Integer.valueOf(m.group(2));
-        	Integer day = Integer.valueOf(m.group(3));
-        	String stock = m.group(4); // always empty
-        	
-        	if (info.getDate() == null) {
-	        	ZonedDateTime date = ZonedDateTime.of(year, month, day, 0, 0, 0, 0, ZoneId.of("Z"));
-				info.setDate(date);
+        	try {
+	        	String title = info.getTitle();
+	        	// 转化title的日期和股票
+	        	Pattern pattern = Pattern.compile("\\D*(\\d{4})[\\.|年](\\d+)[\\.|月](\\d+)\\D+(\\d+).*");
+	
+	        	Matcher m = pattern.matcher(title);
+	        	m.matches();
+	            log.debug("info title：" + title);
+	            log.debug("group 1：" + m.group(1));
+	            log.debug("group 2：" + m.group(2));
+	            log.debug("group 3：" + m.group(3));
+	            log.debug("group 4：" + m.group(4));
+	        	Integer year = Integer.valueOf(m.group(1));
+	        	Integer month = Integer.valueOf(m.group(2));
+	        	Integer day = Integer.valueOf(m.group(3));
+	        	String stock = m.group(4); // always empty
+	        	
+	        	if (info.getDate() == null) {
+		        	ZonedDateTime date = ZonedDateTime.of(year, month, day, 0, 0, 0, 0, ZoneId.of("Z"));
+					info.setDate(date);
+	        	}
+	        	info.setStock(stock);
+	        	infoService.save(info);
+	        	
+	        	// 获取股票历史价格
+	        	Date begin = Date.from(info.getDate().toInstant());
+	        	Calendar c = Calendar.getInstance();
+	        	c.setTime(begin);
+	        	c.add(Calendar.DATE, 30);
+	        	Date end = c.getTime();
+	        	Float beginPrice = 0.0F;
+	        	Float maxPrice = 0.0F;
+	        	Integer increase_days = 0;
+	        	Integer days = 0;        	
+	        	Boolean decrease = false;
+	        	
+	        	StockResult result = stockService.get(stock, begin, end);
+	        	if (result.getStatus() == 0) {
+	        		Iterator<List<String>> iterator = result.getHq().iterator();
+	        		while (iterator.hasNext()) {
+	        			List<String> hq = iterator.next();
+	        			TracertDTO tracertDTO = new TracertDTO();
+	        			if (beginPrice < 0.01F) {
+	        				beginPrice = Float.valueOf(hq.get(1));
+	        			}
+	        			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
+	        			Date curdate = format.parse(hq.get(0));
+	        		    ZoneId zone = ZoneId.systemDefault();
+	        		    LocalDateTime localDateTime = LocalDateTime.ofInstant(curdate.toInstant(), zone);
+	        		    LocalDate localDate = localDateTime.toLocalDate();
+	        			tracertDTO.setDate(localDate);
+	        			tracertDTO.setDays(days ++);
+	        			tracertDTO.setHighest(Float.valueOf(hq.get(6)));
+	        			tracertDTO.setLowest(Float.valueOf(hq.get(5)));
+	        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(4).replace("%", "")));
+	        			tracertDTO.setIncrease_total((tracertDTO.getHighest() - beginPrice) / beginPrice * 100);
+	        			tracertDTO.setAmplitude_day((tracertDTO.getHighest()-tracertDTO.getLowest()) / Float.valueOf(hq.get(1)) * 100);
+	        			tracertDTO.setInfoId(info.getId());
+						tracertService.save(tracertDTO);
+						
+						if (tracertDTO.getHighest() > maxPrice) {
+							maxPrice = tracertDTO.getHighest();
+							increase_days = days; 
+						}
+	        		}
+	        	}
+				// 更新结果判断
+	        	JudgeDTO judgeDTO = new JudgeDTO();
+	        	judgeDTO.setIncrease_days(increase_days);
+	        	judgeDTO.setIncrease_total((maxPrice - beginPrice) / beginPrice * 100);
+	        	judgeDTO.setInfoId(info.getId());
+	        	judgeDTO.setId(info.getId());
+	        	judgeDTO.setScore((int)(float)(judgeDTO.getIncrease_total()));
+	        	judgeService.save(judgeDTO);
+        	} catch (Exception e) {
+        		e.printStackTrace();
         	}
-        	info.setStock(stock);
-        	infoService.save(info);
-        	
-        	// 获取股票历史价格
-        	Date begin = Date.from(info.getDate().toInstant());
-        	Calendar c = Calendar.getInstance();
-        	c.setTime(begin);
-        	c.add(Calendar.DATE, 30);
-        	Date end = c.getTime();
-        	Float beginPrice = 0.0F;
-        	Float maxPrice = 0.0F;
-        	Integer increase_days = 0;
-        	Integer days = 0;        	
-        	Boolean decrease = false;
-        	
-        	StockResult result = stockService.get(stock, begin, end);
-        	if (result.getStatus() == 0) {
-        		Iterator<List<String>> iterator = result.getHq().iterator();
-        		while (iterator.hasNext()) {
-        			List<String> hq = iterator.next();
-        			TracertDTO tracertDTO = new TracertDTO();
-        			if (beginPrice < 0.01F) {
-        				beginPrice = Float.valueOf(hq.get(1));
-        			}
-        			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
-        			Date curdate = format.parse(hq.get(0));
-        		    ZoneId zone = ZoneId.systemDefault();
-        		    LocalDateTime localDateTime = LocalDateTime.ofInstant(curdate.toInstant(), zone);
-        		    LocalDate localDate = localDateTime.toLocalDate();
-        			tracertDTO.setDate(localDate);
-        			tracertDTO.setDays(days ++);
-        			tracertDTO.setHighest(Float.valueOf(hq.get(6)));
-        			tracertDTO.setLowest(Float.valueOf(hq.get(5)));
-        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(4).replace("%", "")));
-        			tracertDTO.setIncrease_total((tracertDTO.getHighest() - beginPrice) / beginPrice * 100);
-        			tracertDTO.setAmplitude_day((tracertDTO.getHighest()-tracertDTO.getLowest()) / Float.valueOf(hq.get(1)) * 100);
-        			tracertDTO.setInfoId(info.getId());
-					tracertService.save(tracertDTO);
-					
-					if (tracertDTO.getHighest() > maxPrice) {
-						maxPrice = tracertDTO.getHighest();
-						increase_days = days; 
-					}
-        		}
-        	}
-			// 更新结果判断
-        	JudgeDTO judgeDTO = new JudgeDTO();
-        	judgeDTO.setIncrease_days(increase_days);
-        	judgeDTO.setIncrease_total((maxPrice - beginPrice) / beginPrice * 100);
-        	judgeDTO.setInfoId(info.getId());
-        	judgeDTO.setId(info.getId());
-        	judgeDTO.setScore((int)(float)(judgeDTO.getIncrease_total()));
-        	judgeService.save(judgeDTO);
         }
         return ResponseEntity.ok().build();
     }
