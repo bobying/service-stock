@@ -13,7 +13,7 @@
     "fields": [
         {
             "fieldName": "score",
-            "fieldType": "Integer",
+            "fieldType": "Integer"
         },
         {
             "fieldName": "increase_total",
@@ -22,9 +22,21 @@
         {
             "fieldName": "increase_days",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "day5",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "day10",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "day30",
+            "fieldType": "Float"
         }
     ],
-    "changelogDate": "20170924141135",
+    "changelogDate": "20170930035448",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "judge",

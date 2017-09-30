@@ -34,6 +34,12 @@ public class JudgeCriteria implements Serializable {
 
     private IntegerFilter increase_days;
 
+    private FloatFilter day5;
+
+    private FloatFilter day10;
+
+    private FloatFilter day30;
+
     private LongFilter infoId;
 
     public JudgeCriteria() {
@@ -71,6 +77,30 @@ public class JudgeCriteria implements Serializable {
         this.increase_days = increase_days;
     }
 
+    public FloatFilter getDay5() {
+        return day5;
+    }
+
+    public void setDay5(FloatFilter day5) {
+        this.day5 = day5;
+    }
+
+    public FloatFilter getDay10() {
+        return day10;
+    }
+
+    public void setDay10(FloatFilter day10) {
+        this.day10 = day10;
+    }
+
+    public FloatFilter getDay30() {
+        return day30;
+    }
+
+    public void setDay30(FloatFilter day30) {
+        this.day30 = day30;
+    }
+
     public LongFilter getInfoId() {
         return infoId;
     }
@@ -86,6 +116,9 @@ public class JudgeCriteria implements Serializable {
                 (score != null ? "score=" + score + ", " : "") +
                 (increase_total != null ? "increase_total=" + increase_total + ", " : "") +
                 (increase_days != null ? "increase_days=" + increase_days + ", " : "") +
+                (day5 != null ? "day5=" + day5 + ", " : "") +
+                (day10 != null ? "day10=" + day10 + ", " : "") +
+                (day30 != null ? "day30=" + day30 + ", " : "") +
                 (infoId != null ? "infoId=" + infoId + ", " : "") +
             "}";
     }

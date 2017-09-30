@@ -32,6 +32,15 @@ public class Judge implements Serializable {
     @Column(name = "increase_days")
     private Integer increase_days;
 
+    @Column(name = "day_5")
+    private Float day5;
+
+    @Column(name = "day_10")
+    private Float day10;
+
+    @Column(name = "day_30")
+    private Float day30;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Info info;
@@ -84,6 +93,45 @@ public class Judge implements Serializable {
         this.increase_days = increase_days;
     }
 
+    public Float getDay5() {
+        return day5;
+    }
+
+    public Judge day5(Float day5) {
+        this.day5 = day5;
+        return this;
+    }
+
+    public void setDay5(Float day5) {
+        this.day5 = day5;
+    }
+
+    public Float getDay10() {
+        return day10;
+    }
+
+    public Judge day10(Float day10) {
+        this.day10 = day10;
+        return this;
+    }
+
+    public void setDay10(Float day10) {
+        this.day10 = day10;
+    }
+
+    public Float getDay30() {
+        return day30;
+    }
+
+    public Judge day30(Float day30) {
+        this.day30 = day30;
+        return this;
+    }
+
+    public void setDay30(Float day30) {
+        this.day30 = day30;
+    }
+
     public Info getInfo() {
         return info;
     }
@@ -125,6 +173,9 @@ public class Judge implements Serializable {
             ", score='" + getScore() + "'" +
             ", increase_total='" + getIncrease_total() + "'" +
             ", increase_days='" + getIncrease_days() + "'" +
+            ", day5='" + getDay5() + "'" +
+            ", day10='" + getDay10() + "'" +
+            ", day30='" + getDay30() + "'" +
             "}";
     }
 }
