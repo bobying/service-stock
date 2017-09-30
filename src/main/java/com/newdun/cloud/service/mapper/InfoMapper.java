@@ -16,8 +16,11 @@ public interface InfoMapper extends EntityMapper <InfoDTO, Info> {
     @Mapping(source = "judge.id", target = "judgeId")
     @Mapping(source = "judge.score", target = "judgeScore")
     @Mapping(source = "judge.increase_days", target = "increaseDays")
-    @Mapping(source = "judge.increase_total", target = "increaseTotal")
-    InfoDTO toDto(Info info); 
+    @Mapping(source = "judge.increase_total", target = "increaseTotal", numberFormat="#.##")
+    @Mapping(source = "judge.day5", target = "increasedDay5", numberFormat="#.##")
+    @Mapping(source = "judge.day10", target = "increasedDay10", numberFormat="#.##")
+    @Mapping(source = "judge.day30", target = "increasedDay30", numberFormat="#.##")
+    InfoDTO toDto(Info info);
 
     @Mapping(source = "sourceId", target = "source")
 //    @Mapping(source = "judgeId", target = "judge")

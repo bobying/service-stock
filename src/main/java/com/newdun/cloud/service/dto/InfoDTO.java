@@ -32,7 +32,11 @@ public class InfoDTO implements Serializable {
 
     private int increaseDays;
     
-    private Float increaseTotal;
+    private String increaseTotal;
+    
+    private String increasedDay5;
+    private String increasedDay10;
+    private String increasedDay30;
     
     private int judgeScore;
     
@@ -132,11 +136,11 @@ public class InfoDTO implements Serializable {
 		this.increaseDays = increaseDays;
 	}
 
-	public Float getIncreaseTotal() {
+	public String getIncreaseTotal() {
 		return increaseTotal;
 	}
 
-	public void setIncreaseTotal(Float increaseTotal) {
+	public void setIncreaseTotal(String increaseTotal) {
 		this.increaseTotal = increaseTotal;
 	}
 
@@ -154,5 +158,29 @@ public class InfoDTO implements Serializable {
 
 	public void setJudgeId(Long judgeId) {
 		this.judgeId = judgeId;
+	}
+
+	public String getIncreasedDay5() {
+		return increasedDay5;
+	}
+
+	public void setIncreasedDay5(String increasedDay5) {
+		this.increasedDay5 = increasedDay5;
+	}
+
+	public String getIncreasedDay10() {
+		return increasedDay10;
+	}
+
+	public void setIncreasedDay10(String increasedDay10) {
+		this.increasedDay10 = increasedDay10;
+	}
+
+	public String getIncreasedDay30() {
+		return increasedDay30;
+	}
+
+	public void setIncreasedDay30(String increasedDay30) {
+		this.increasedDay30 = increasedDay30;
 	}
 }

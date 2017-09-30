@@ -106,22 +106,27 @@ public class ParseResource {
 	        	Date begin = Date.from(info.getDate().toInstant());
 	        	Calendar c = Calendar.getInstance();
 	        	c.setTime(begin);
-	        	c.add(Calendar.DATE, 30);
+	        	c.add(Calendar.DATE, 31);
 	        	Date end = c.getTime();
-	        	Float beginPrice = 0.0F;
-	        	Float maxPrice = 0.0F;
-	        	Integer increase_days = 0;
-	        	Integer days = 0;        	
-	        	Boolean decrease = false;
 	        	
+	        	Float beginPrice = 0.0F;	// 第一天开始价格
+	        	Float maxPrice = 0.0F;		// 时间段内最高价格
+	        	Integer increase_days = 0;  // 连续增长天数
+	        	Integer days = 0;        	// 迭代天数
+	        	Boolean decrease = false;   // 是否下降，条件：收盘价比最高价低5%
+	        	
+	        	JudgeDTO judgeDTO = new JudgeDTO();
+	        	judgeDTO.setId(info.getId());
+	        	judgeDTO.setInfoId(info.getId());
+
 	        	StockResult result = stockService.get(stock, begin, end);
 	        	if (result.getStatus() == 0) {
 	        		Iterator<List<String>> iterator = result.getHq().iterator();
 	        		while (iterator.hasNext()) {
 	        			List<String> hq = iterator.next();
 	        			TracertDTO tracertDTO = new TracertDTO();
-	        			if (beginPrice < 0.01F) {
-	        				beginPrice = Float.valueOf(hq.get(1));
+	        			if (beginPrice < 0.01F) { 
+	        				beginPrice = Float.valueOf(hq.get(1));  // 获取起始价格
 	        			}
 	        			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
 	        			Date curdate = format.parse(hq.get(0));
@@ -129,7 +134,7 @@ public class ParseResource {
 	        		    LocalDateTime localDateTime = LocalDateTime.ofInstant(curdate.toInstant(), zone);
 	        		    LocalDate localDate = localDateTime.toLocalDate();
 	        			tracertDTO.setDate(localDate);
-	        			tracertDTO.setDays(days ++);
+	        			tracertDTO.setDays(days);
 	        			tracertDTO.setHighest(Float.valueOf(hq.get(6)));
 	        			tracertDTO.setLowest(Float.valueOf(hq.get(5)));
 	        			tracertDTO.setIncrease_day(Float.valueOf(hq.get(4).replace("%", "")));
@@ -138,19 +143,31 @@ public class ParseResource {
 	        			tracertDTO.setInfoId(info.getId());
 						tracertService.save(tracertDTO);
 						
-						if (tracertDTO.getHighest() > maxPrice) {
+						if (tracertDTO.getHighest() > maxPrice) {   // 保存时间段内最高价
 							maxPrice = tracertDTO.getHighest();
-							increase_days = days; 
+							increase_days = days + 1; 
 						}
+						switch (days) {
+						case 5:
+							judgeDTO.setDay5((Float.valueOf(hq.get(1)) - beginPrice) / beginPrice * 100);
+							break;
+						case 10:
+							judgeDTO.setDay10((Float.valueOf(hq.get(1)) - beginPrice) / beginPrice * 100);
+							break;
+						case 30:
+							judgeDTO.setDay30((Float.valueOf(hq.get(1)) - beginPrice) / beginPrice * 100);
+							break;
+						}
+						
+						days ++;
 	        		}
 	        	}
+	        	
 				// 更新结果判断
-	        	JudgeDTO judgeDTO = new JudgeDTO();
 	        	judgeDTO.setIncrease_days(increase_days);
 	        	judgeDTO.setIncrease_total((maxPrice - beginPrice) / beginPrice * 100);
-	        	judgeDTO.setInfoId(info.getId());
-	        	judgeDTO.setId(info.getId());
 	        	judgeDTO.setScore((int)(float)(judgeDTO.getIncrease_total()));
+	        	
 	        	judgeService.save(judgeDTO);
         	} catch (Exception e) {
         		e.printStackTrace();

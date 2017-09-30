@@ -15,6 +15,19 @@ public class StockResult implements Serializable {
 
     private Long status;
     private String code;
+    
+    /**
+     * 0：日期
+     * 1：开盘
+     * 2：收盘
+     * 3：涨跌额
+     * 4：涨跌幅度
+     * 5：最低
+     * 6：最高
+     * 7：成交：万手
+     * 8：成交量
+     * 9：换手率
+     */
     private List<List<String>> hq;
 //    private List<String> stat;
 
