@@ -63,6 +63,9 @@ public class JudgeResourceIntTest {
     private static final Float DEFAULT_DAY_30 = 1F;
     private static final Float UPDATED_DAY_30 = 2F;
 
+    private static final Float DEFAULT_DAY_20 = 1F;
+    private static final Float UPDATED_DAY_20 = 2F;
+
     @Autowired
     private JudgeRepository judgeRepository;
 
@@ -117,7 +120,8 @@ public class JudgeResourceIntTest {
             .increase_days(DEFAULT_INCREASE_DAYS)
             .day5(DEFAULT_DAY_5)
             .day10(DEFAULT_DAY_10)
-            .day30(DEFAULT_DAY_30);
+            .day30(DEFAULT_DAY_30)
+            .day20(DEFAULT_DAY_20);
         return judge;
     }
 
@@ -149,6 +153,7 @@ public class JudgeResourceIntTest {
         assertThat(testJudge.getDay5()).isEqualTo(DEFAULT_DAY_5);
         assertThat(testJudge.getDay10()).isEqualTo(DEFAULT_DAY_10);
         assertThat(testJudge.getDay30()).isEqualTo(DEFAULT_DAY_30);
+        assertThat(testJudge.getDay20()).isEqualTo(DEFAULT_DAY_20);
 
         // Validate the Judge in Elasticsearch
         Judge judgeEs = judgeSearchRepository.findOne(testJudge.getId());
@@ -191,7 +196,8 @@ public class JudgeResourceIntTest {
             .andExpect(jsonPath("$.[*].increase_days").value(hasItem(DEFAULT_INCREASE_DAYS)))
             .andExpect(jsonPath("$.[*].day5").value(hasItem(DEFAULT_DAY_5.doubleValue())))
             .andExpect(jsonPath("$.[*].day10").value(hasItem(DEFAULT_DAY_10.doubleValue())))
-            .andExpect(jsonPath("$.[*].day30").value(hasItem(DEFAULT_DAY_30.doubleValue())));
+            .andExpect(jsonPath("$.[*].day30").value(hasItem(DEFAULT_DAY_30.doubleValue())))
+            .andExpect(jsonPath("$.[*].day20").value(hasItem(DEFAULT_DAY_20.doubleValue())));
     }
 
     @Test
@@ -210,7 +216,8 @@ public class JudgeResourceIntTest {
             .andExpect(jsonPath("$.increase_days").value(DEFAULT_INCREASE_DAYS))
             .andExpect(jsonPath("$.day5").value(DEFAULT_DAY_5.doubleValue()))
             .andExpect(jsonPath("$.day10").value(DEFAULT_DAY_10.doubleValue()))
-            .andExpect(jsonPath("$.day30").value(DEFAULT_DAY_30.doubleValue()));
+            .andExpect(jsonPath("$.day30").value(DEFAULT_DAY_30.doubleValue()))
+            .andExpect(jsonPath("$.day20").value(DEFAULT_DAY_20.doubleValue()));
     }
 
     @Test
@@ -501,6 +508,45 @@ public class JudgeResourceIntTest {
         defaultJudgeShouldNotBeFound("day30.specified=false");
     }
 
+    @Test
+    @Transactional
+    public void getAllJudgesByDay20IsEqualToSomething() throws Exception {
+        // Initialize the database
+        judgeRepository.saveAndFlush(judge);
+
+        // Get all the judgeList where day20 equals to DEFAULT_DAY_20
+        defaultJudgeShouldBeFound("day20.equals=" + DEFAULT_DAY_20);
+
+        // Get all the judgeList where day20 equals to UPDATED_DAY_20
+        defaultJudgeShouldNotBeFound("day20.equals=" + UPDATED_DAY_20);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJudgesByDay20IsInShouldWork() throws Exception {
+        // Initialize the database
+        judgeRepository.saveAndFlush(judge);
+
+        // Get all the judgeList where day20 in DEFAULT_DAY_20 or UPDATED_DAY_20
+        defaultJudgeShouldBeFound("day20.in=" + DEFAULT_DAY_20 + "," + UPDATED_DAY_20);
+
+        // Get all the judgeList where day20 equals to UPDATED_DAY_20
+        defaultJudgeShouldNotBeFound("day20.in=" + UPDATED_DAY_20);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJudgesByDay20IsNullOrNotNull() throws Exception {
+        // Initialize the database
+        judgeRepository.saveAndFlush(judge);
+
+        // Get all the judgeList where day20 is not null
+        defaultJudgeShouldBeFound("day20.specified=true");
+
+        // Get all the judgeList where day20 is null
+        defaultJudgeShouldNotBeFound("day20.specified=false");
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -514,7 +560,8 @@ public class JudgeResourceIntTest {
             .andExpect(jsonPath("$.[*].increase_days").value(hasItem(DEFAULT_INCREASE_DAYS)))
             .andExpect(jsonPath("$.[*].day5").value(hasItem(DEFAULT_DAY_5.doubleValue())))
             .andExpect(jsonPath("$.[*].day10").value(hasItem(DEFAULT_DAY_10.doubleValue())))
-            .andExpect(jsonPath("$.[*].day30").value(hasItem(DEFAULT_DAY_30.doubleValue())));
+            .andExpect(jsonPath("$.[*].day30").value(hasItem(DEFAULT_DAY_30.doubleValue())))
+            .andExpect(jsonPath("$.[*].day20").value(hasItem(DEFAULT_DAY_20.doubleValue())));
     }
 
     /**
@@ -553,7 +600,8 @@ public class JudgeResourceIntTest {
             .increase_days(UPDATED_INCREASE_DAYS)
             .day5(UPDATED_DAY_5)
             .day10(UPDATED_DAY_10)
-            .day30(UPDATED_DAY_30);
+            .day30(UPDATED_DAY_30)
+            .day20(UPDATED_DAY_20);
         JudgeDTO judgeDTO = judgeMapper.toDto(updatedJudge);
 
         restJudgeMockMvc.perform(put("/api/judges")
@@ -571,6 +619,7 @@ public class JudgeResourceIntTest {
         assertThat(testJudge.getDay5()).isEqualTo(UPDATED_DAY_5);
         assertThat(testJudge.getDay10()).isEqualTo(UPDATED_DAY_10);
         assertThat(testJudge.getDay30()).isEqualTo(UPDATED_DAY_30);
+        assertThat(testJudge.getDay20()).isEqualTo(UPDATED_DAY_20);
 
         // Validate the Judge in Elasticsearch
         Judge judgeEs = judgeSearchRepository.findOne(testJudge.getId());
@@ -635,7 +684,8 @@ public class JudgeResourceIntTest {
             .andExpect(jsonPath("$.[*].increase_days").value(hasItem(DEFAULT_INCREASE_DAYS)))
             .andExpect(jsonPath("$.[*].day5").value(hasItem(DEFAULT_DAY_5.doubleValue())))
             .andExpect(jsonPath("$.[*].day10").value(hasItem(DEFAULT_DAY_10.doubleValue())))
-            .andExpect(jsonPath("$.[*].day30").value(hasItem(DEFAULT_DAY_30.doubleValue())));
+            .andExpect(jsonPath("$.[*].day30").value(hasItem(DEFAULT_DAY_30.doubleValue())))
+            .andExpect(jsonPath("$.[*].day20").value(hasItem(DEFAULT_DAY_20.doubleValue())));
     }
 
     @Test

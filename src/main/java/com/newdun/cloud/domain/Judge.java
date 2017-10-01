@@ -41,6 +41,9 @@ public class Judge implements Serializable {
     @Column(name = "day_30")
     private Float day30;
 
+    @Column(name = "day_20")
+    private Float day20;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Info info;
@@ -132,6 +135,19 @@ public class Judge implements Serializable {
         this.day30 = day30;
     }
 
+    public Float getDay20() {
+        return day20;
+    }
+
+    public Judge day20(Float day20) {
+        this.day20 = day20;
+        return this;
+    }
+
+    public void setDay20(Float day20) {
+        this.day20 = day20;
+    }
+
     public Info getInfo() {
         return info;
     }
@@ -176,6 +192,7 @@ public class Judge implements Serializable {
             ", day5='" + getDay5() + "'" +
             ", day10='" + getDay10() + "'" +
             ", day30='" + getDay30() + "'" +
+            ", day20='" + getDay20() + "'" +
             "}";
     }
 }

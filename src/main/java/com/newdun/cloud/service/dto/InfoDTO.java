@@ -36,6 +36,7 @@ public class InfoDTO implements Serializable {
     
     private String increasedDay5;
     private String increasedDay10;
+    private String increasedDay20;
     private String increasedDay30;
     
     private int judgeScore;
@@ -174,6 +175,14 @@ public class InfoDTO implements Serializable {
 
 	public void setIncreasedDay10(String increasedDay10) {
 		this.increasedDay10 = increasedDay10;
+	}
+
+	public String getIncreasedDay20() {
+		return increasedDay20;
+	}
+
+	public void setIncreasedDay20(String increasedDay20) {
+		this.increasedDay20 = increasedDay20;
 	}
 
 	public String getIncreasedDay30() {

@@ -7,13 +7,11 @@
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170924102240_added_entity_Source.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170925000745_added_entity_Tracert.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170924141135_added_entity_Judge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170925025224_added_entity_Info.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170930035448_added_entity_Judge.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20170925000745_added_entity_constraints_Tracert.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170925025224_added_entity_constraints_Info.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170924141135_added_entity_constraints_Judge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170930035448_added_entity_constraints_Judge.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

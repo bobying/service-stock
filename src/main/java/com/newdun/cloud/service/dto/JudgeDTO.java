@@ -25,6 +25,8 @@ public class JudgeDTO implements Serializable {
 
     private Float day30;
 
+    private Float day20;
+
     private Long infoId;
 
     private String infoTitle;
@@ -85,6 +87,14 @@ public class JudgeDTO implements Serializable {
         this.day30 = day30;
     }
 
+    public Float getDay20() {
+        return day20;
+    }
+
+    public void setDay20(Float day20) {
+        this.day20 = day20;
+    }
+
     public Long getInfoId() {
         return infoId;
     }
@@ -132,6 +142,7 @@ public class JudgeDTO implements Serializable {
             ", day5='" + getDay5() + "'" +
             ", day10='" + getDay10() + "'" +
             ", day30='" + getDay30() + "'" +
+            ", day20='" + getDay20() + "'" +
             "}";
     }
 }

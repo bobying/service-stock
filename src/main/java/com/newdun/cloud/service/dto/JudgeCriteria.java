@@ -40,6 +40,8 @@ public class JudgeCriteria implements Serializable {
 
     private FloatFilter day30;
 
+    private FloatFilter day20;
+
     private LongFilter infoId;
 
     public JudgeCriteria() {
@@ -101,6 +103,14 @@ public class JudgeCriteria implements Serializable {
         this.day30 = day30;
     }
 
+    public FloatFilter getDay20() {
+        return day20;
+    }
+
+    public void setDay20(FloatFilter day20) {
+        this.day20 = day20;
+    }
+
     public LongFilter getInfoId() {
         return infoId;
     }
@@ -119,6 +129,7 @@ public class JudgeCriteria implements Serializable {
                 (day5 != null ? "day5=" + day5 + ", " : "") +
                 (day10 != null ? "day10=" + day10 + ", " : "") +
                 (day30 != null ? "day30=" + day30 + ", " : "") +
+                (day20 != null ? "day20=" + day20 + ", " : "") +
                 (infoId != null ? "infoId=" + infoId + ", " : "") +
             "}";
     }

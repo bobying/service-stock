@@ -42,9 +42,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="day_20" type="${floatType}">
+                <constraints nullable="true" />
+            </column> 
+
             <column name="day_30" type="${floatType}">
                 <constraints nullable="true" />
             </column>
+
             <column name="info_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>

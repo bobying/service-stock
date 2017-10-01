@@ -154,6 +154,8 @@ public class ParseResource {
 						case 10:
 							judgeDTO.setDay10((Float.valueOf(hq.get(1)) - beginPrice) / beginPrice * 100);
 							break;
+						case 20:
+							judgeDTO.setDay20((Float.valueOf(hq.get(1)) - beginPrice) / beginPrice * 100);
 						case 30:
 							judgeDTO.setDay30((Float.valueOf(hq.get(1)) - beginPrice) / beginPrice * 100);
 							break;
