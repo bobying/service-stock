@@ -72,7 +72,7 @@ public class JudgeService {
     @Transactional(readOnly = true)
     public JudgeDTO findOne(Long id) {
         log.debug("Request to get Judge : {}", id);
-        Judge judge = judgeRepository.findOne(id);
+        Judge judge = judgeRepository.getOne(id);
         return judgeMapper.toDto(judge);
     }
 
@@ -83,8 +83,8 @@ public class JudgeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Judge : {}", id);
-        judgeRepository.delete(id);
-        judgeSearchRepository.delete(id);
+        judgeRepository.deleteById(id);
+        judgeSearchRepository.deleteById(id);
     }
 
     /**

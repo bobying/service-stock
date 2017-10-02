@@ -74,7 +74,7 @@ public class TracertService {
     @Transactional(readOnly = true)
     public TracertDTO findOne(Long id) {
         log.debug("Request to get Tracert : {}", id);
-        Tracert tracert = tracertRepository.findOne(id);
+        Tracert tracert = tracertRepository.getOne(id);
         return tracertMapper.toDto(tracert);
     }
 
@@ -85,8 +85,8 @@ public class TracertService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Tracert : {}", id);
-        tracertRepository.delete(id);
-        tracertSearchRepository.delete(id);
+        tracertRepository.deleteById(id);
+        tracertSearchRepository.deleteById(id);
     }
 
     /**

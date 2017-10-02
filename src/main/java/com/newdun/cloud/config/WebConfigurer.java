@@ -11,8 +11,7 @@ import com.hazelcast.core.HazelcastInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.*;
-import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import io.undertow.UndertowOptions;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +28,7 @@ import javax.servlet.*;
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
-public class WebConfigurer implements ServletContextInitializer, EmbeddedServletContainerCustomizer {
+public class WebConfigurer implements ServletContextInitializer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
@@ -61,29 +60,29 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
     /**
      * Customize the Servlet engine: Mime types, the document root, the cache.
      */
-    @Override
-    public void customize(ConfigurableEmbeddedServletContainer container) {
-        MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
-        // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
-        mappings.add("html", "text/html;charset=utf-8");
-        // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
-        mappings.add("json", "text/html;charset=utf-8");
-        container.setMimeMappings(mappings);
-
-        /*
-         * Enable HTTP/2 for Undertow - https://twitter.com/ankinson/status/829256167700492288
-         * HTTP/2 requires HTTPS, so HTTP requests will fallback to HTTP/1.1.
-         * See the JHipsterProperties class and your application-*.yml configuration files
-         * for more information.
-         */
-        if (jHipsterProperties.getHttp().getVersion().equals(JHipsterProperties.Http.Version.V_2_0) &&
-            container instanceof UndertowEmbeddedServletContainerFactory) {
-
-            ((UndertowEmbeddedServletContainerFactory) container)
-                .addBuilderCustomizers(builder ->
-                    builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true));
-        }
-    }
+//    @Override
+//    public void customize(ConfigurableEmbeddedServletContainer container) {
+//        MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
+//        // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
+//        mappings.add("html", "text/html;charset=utf-8");
+//        // CloudFoundry issue, see https://github.com/cloudfoundry/gorouter/issues/64
+//        mappings.add("json", "text/html;charset=utf-8");
+//        container.setMimeMappings(mappings);
+//
+//        /*
+//         * Enable HTTP/2 for Undertow - https://twitter.com/ankinson/status/829256167700492288
+//         * HTTP/2 requires HTTPS, so HTTP requests will fallback to HTTP/1.1.
+//         * See the JHipsterProperties class and your application-*.yml configuration files
+//         * for more information.
+//         */
+//        if (jHipsterProperties.getHttp().getVersion().equals(JHipsterProperties.Http.Version.V_2_0) &&
+//            container instanceof UndertowServletWebServerFactory) {
+//
+//            ((UndertowServletWebServerFactory) container)
+//                .addBuilderCustomizers(builder ->
+//                    builder.setServerOption(UndertowOptions.ENABLE_HTTP2, true));
+//        }
+//    }
 
     /**
      * Initializes Metrics.

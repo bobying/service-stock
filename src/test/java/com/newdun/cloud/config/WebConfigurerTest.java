@@ -3,6 +3,7 @@ package com.newdun.cloud.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
+import com.hazelcast.cardinality.CardinalityEstimator;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.*;
 import com.hazelcast.durableexecutor.DurableExecutorService;
@@ -10,6 +11,7 @@ import com.hazelcast.logging.LoggingService;
 import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.quorum.QuorumService;
 import com.hazelcast.ringbuffer.Ringbuffer;
+import com.hazelcast.scheduledexecutor.IScheduledExecutorService;
 import com.hazelcast.transaction.*;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
@@ -19,7 +21,7 @@ import io.undertow.UndertowOptions;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
+import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.web.MockServletContext;
@@ -100,8 +102,8 @@ public class WebConfigurerTest {
     @Test
     public void testCustomizeServletContainer() {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION);
-        UndertowEmbeddedServletContainerFactory container = new UndertowEmbeddedServletContainerFactory();
-        webConfigurer.customize(container);
+        UndertowServletWebServerFactory container = new UndertowServletWebServerFactory();
+//        webConfigurer.customize(container);
         assertThat(container.getMimeMappings().get("abs")).isEqualTo("audio/x-mpeg");
         assertThat(container.getMimeMappings().get("html")).isEqualTo("text/html;charset=utf-8");
         assertThat(container.getMimeMappings().get("json")).isEqualTo("text/html;charset=utf-8");
@@ -115,8 +117,8 @@ public class WebConfigurerTest {
     @Test
     public void testUndertowHttp2Enabled() {
         props.getHttp().setVersion(JHipsterProperties.Http.Version.V_2_0);
-        UndertowEmbeddedServletContainerFactory container = new UndertowEmbeddedServletContainerFactory();
-        webConfigurer.customize(container);
+        UndertowServletWebServerFactory container = new UndertowServletWebServerFactory();
+//        webConfigurer.customize(container);
         Builder builder = Undertow.builder();
         container.getBuilderCustomizers().forEach(c -> c.customize(builder));
         OptionMap.Builder serverOptions = (OptionMap.Builder) ReflectionTestUtils.getField(builder, "serverOptions");
@@ -529,6 +531,18 @@ public class WebConfigurerTest {
         public void shutdown() {
 
         }
+
+		@Override
+		public CardinalityEstimator getCardinalityEstimator(String arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IScheduledExecutorService getScheduledExecutorService(String arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 
 }

@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -156,8 +157,8 @@ public class JudgeResourceIntTest {
         assertThat(testJudge.getDay20()).isEqualTo(DEFAULT_DAY_20);
 
         // Validate the Judge in Elasticsearch
-        Judge judgeEs = judgeSearchRepository.findOne(testJudge.getId());
-        assertThat(judgeEs).isEqualToComparingFieldByField(testJudge);
+        Optional<Judge> judgeEs = judgeSearchRepository.findById(testJudge.getId());
+        assertThat(judgeEs.get()).isEqualToComparingFieldByField(testJudge);
     }
 
     @Test
@@ -593,7 +594,7 @@ public class JudgeResourceIntTest {
         int databaseSizeBeforeUpdate = judgeRepository.findAll().size();
 
         // Update the judge
-        Judge updatedJudge = judgeRepository.findOne(judge.getId());
+        Judge updatedJudge = judgeRepository.findById(judge.getId()).get();
         updatedJudge
             .score(UPDATED_SCORE)
             .increase_total(UPDATED_INCREASE_TOTAL)
@@ -622,7 +623,7 @@ public class JudgeResourceIntTest {
         assertThat(testJudge.getDay20()).isEqualTo(UPDATED_DAY_20);
 
         // Validate the Judge in Elasticsearch
-        Judge judgeEs = judgeSearchRepository.findOne(testJudge.getId());
+        Judge judgeEs = judgeSearchRepository.findById(testJudge.getId()).get();
         assertThat(judgeEs).isEqualToComparingFieldByField(testJudge);
     }
 
@@ -659,7 +660,7 @@ public class JudgeResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean judgeExistsInEs = judgeSearchRepository.exists(judge.getId());
+        boolean judgeExistsInEs = judgeSearchRepository.existsById(judge.getId());
         assertThat(judgeExistsInEs).isFalse();
 
         // Validate the database is empty

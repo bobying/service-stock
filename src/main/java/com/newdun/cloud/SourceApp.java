@@ -1,7 +1,6 @@
 package com.newdun.cloud;
 
 import com.newdun.cloud.client.OAuth2InterceptedFeignConfiguration;
-import com.newdun.cloud.config.ApplicationProperties;
 import com.newdun.cloud.config.DefaultProfileUtil;
 
 import io.github.jhipster.config.JHipsterConstants;
@@ -28,7 +27,7 @@ import java.util.Collection;
     excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = OAuth2InterceptedFeignConfiguration.class)
 )
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
-@EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
+@EnableConfigurationProperties({LiquibaseProperties.class})
 @EnableDiscoveryClient
 public class SourceApp {
 
@@ -69,6 +68,7 @@ public class SourceApp {
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(SourceApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
+        try {
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";
         if (env.getProperty("server.ssl.key-store") != null) {
@@ -91,5 +91,9 @@ public class SourceApp {
         log.info("\n----------------------------------------------------------\n\t" +
                 "Config Server: \t{}\n----------------------------------------------------------",
             configServerStatus == null ? "Not found or not setup for this application" : configServerStatus);
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        }
+
     }
 }

@@ -152,7 +152,7 @@ public class SourceResourceIntTest {
         assertThat(testSource.getCreated()).isEqualTo(DEFAULT_CREATED);
 
         // Validate the Source in Elasticsearch
-        Source sourceEs = sourceSearchRepository.findOne(testSource.getId());
+        Source sourceEs = sourceSearchRepository.findById(testSource.getId()).get();
         assertThat(sourceEs).isEqualToComparingFieldByField(testSource);
     }
 
@@ -439,7 +439,7 @@ public class SourceResourceIntTest {
         int databaseSizeBeforeUpdate = sourceRepository.findAll().size();
 
         // Update the source
-        Source updatedSource = sourceRepository.findOne(source.getId());
+        Source updatedSource = sourceRepository.findById(source.getId()).get();
         updatedSource
             .title(UPDATED_TITLE)
             .desc(UPDATED_DESC)
@@ -464,7 +464,7 @@ public class SourceResourceIntTest {
         assertThat(testSource.getCreated()).isEqualTo(UPDATED_CREATED);
 
         // Validate the Source in Elasticsearch
-        Source sourceEs = sourceSearchRepository.findOne(testSource.getId());
+        Source sourceEs = sourceSearchRepository.findById(testSource.getId()).get();
         assertThat(sourceEs).isEqualToComparingFieldByField(testSource);
     }
 
@@ -501,7 +501,7 @@ public class SourceResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean sourceExistsInEs = sourceSearchRepository.exists(source.getId());
+        boolean sourceExistsInEs = sourceSearchRepository.existsById(source.getId());
         assertThat(sourceExistsInEs).isFalse();
 
         // Validate the database is empty

@@ -18,7 +18,7 @@ eureka:
     client:
         enabled: true
         healthcheck:
-            enabled: true
+            enabled: false
         fetch-registry: true
         register-with-eureka: true
         instance-info-replication-interval-seconds: 10

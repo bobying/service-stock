@@ -35,6 +35,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 import static com.newdun.cloud.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -147,8 +148,8 @@ public class InfoResourceIntTest {
         assertThat(testInfo.getStock()).isEqualTo(DEFAULT_STOCK);
 
         // Validate the Info in Elasticsearch
-        Info infoEs = infoSearchRepository.findOne(testInfo.getId());
-        assertThat(infoEs).isEqualToComparingFieldByField(testInfo);
+        Optional<Info> infoEs = infoSearchRepository.findById(testInfo.getId());
+        assertThat(infoEs.get()).isEqualToComparingFieldByField(testInfo);
     }
 
     @Test
@@ -392,7 +393,7 @@ public class InfoResourceIntTest {
         int databaseSizeBeforeUpdate = infoRepository.findAll().size();
 
         // Update the info
-        Info updatedInfo = infoRepository.findOne(info.getId());
+        Info updatedInfo = infoRepository.getOne(info.getId());
         updatedInfo
             .date(UPDATED_DATE)
             .title(UPDATED_TITLE)
@@ -415,8 +416,8 @@ public class InfoResourceIntTest {
         assertThat(testInfo.getStock()).isEqualTo(UPDATED_STOCK);
 
         // Validate the Info in Elasticsearch
-        Info infoEs = infoSearchRepository.findOne(testInfo.getId());
-        assertThat(infoEs).isEqualToComparingFieldByField(testInfo);
+        Optional<Info> infoEs = infoSearchRepository.findById(testInfo.getId());
+        assertThat(infoEs.get()).isEqualToComparingFieldByField(testInfo);
     }
 
     @Test
@@ -452,7 +453,7 @@ public class InfoResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean infoExistsInEs = infoSearchRepository.exists(info.getId());
+        boolean infoExistsInEs = infoSearchRepository.existsById(info.getId());
         assertThat(infoExistsInEs).isFalse();
 
         // Validate the database is empty

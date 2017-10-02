@@ -158,7 +158,7 @@ public class TracertResourceIntTest {
         assertThat(testTracert.getDate()).isEqualTo(DEFAULT_DATE);
 
         // Validate the Tracert in Elasticsearch
-        Tracert tracertEs = tracertSearchRepository.findOne(testTracert.getId());
+        Tracert tracertEs = tracertSearchRepository.findById(testTracert.getId()).get();
         assertThat(tracertEs).isEqualToComparingFieldByField(testTracert);
     }
 
@@ -595,7 +595,7 @@ public class TracertResourceIntTest {
         int databaseSizeBeforeUpdate = tracertRepository.findAll().size();
 
         // Update the tracert
-        Tracert updatedTracert = tracertRepository.findOne(tracert.getId());
+        Tracert updatedTracert = tracertRepository.findById(tracert.getId()).get();
         updatedTracert
             .days(UPDATED_DAYS)
             .increase_day(UPDATED_INCREASE_DAY)
@@ -624,7 +624,7 @@ public class TracertResourceIntTest {
         assertThat(testTracert.getDate()).isEqualTo(UPDATED_DATE);
 
         // Validate the Tracert in Elasticsearch
-        Tracert tracertEs = tracertSearchRepository.findOne(testTracert.getId());
+        Tracert tracertEs = tracertSearchRepository.findById(testTracert.getId()).get();
         assertThat(tracertEs).isEqualToComparingFieldByField(testTracert);
     }
 
@@ -661,7 +661,7 @@ public class TracertResourceIntTest {
             .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean tracertExistsInEs = tracertSearchRepository.exists(tracert.getId());
+        boolean tracertExistsInEs = tracertSearchRepository.existsById(tracert.getId());
         assertThat(tracertExistsInEs).isFalse();
 
         // Validate the database is empty

@@ -72,7 +72,7 @@ public class SourceService {
     @Transactional(readOnly = true)
     public SourceDTO findOne(Long id) {
         log.debug("Request to get Source : {}", id);
-        Source source = sourceRepository.findOne(id);
+        Source source = sourceRepository.getOne(id);
         return sourceMapper.toDto(source);
     }
 
@@ -83,8 +83,8 @@ public class SourceService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Source : {}", id);
-        sourceRepository.delete(id);
-        sourceSearchRepository.delete(id);
+        sourceRepository.deleteById(id);
+        sourceSearchRepository.deleteById(id);
     }
 
     /**

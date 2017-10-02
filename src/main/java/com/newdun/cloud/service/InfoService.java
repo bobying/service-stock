@@ -91,7 +91,7 @@ public class InfoService {
     @Transactional(readOnly = true)
     public InfoDTO findOne(Long id) {
         log.debug("Request to get Info : {}", id);
-        Info info = infoRepository.findOne(id);
+        Info info = infoRepository.getOne(id);
         return infoMapper.toDto(info);
     }
 
@@ -102,8 +102,8 @@ public class InfoService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Info : {}", id);
-        infoRepository.delete(id);
-        infoSearchRepository.delete(id);
+        infoRepository.deleteById(id);
+        infoSearchRepository.deleteById(id);
     }
 
     /**
