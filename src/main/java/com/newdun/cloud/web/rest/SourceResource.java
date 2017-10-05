@@ -39,6 +39,7 @@ public class SourceResource {
     private static final String ENTITY_NAME = "source";
 
     private final SourceService sourceService;
+
     private final SourceQueryService sourceQueryService;
 
     public SourceResource(SourceService sourceService, SourceQueryService sourceQueryService) {

@@ -27,7 +27,7 @@ import com.newdun.cloud.service.mapper.SourceMapper;
  * Service for executing complex queries for Source entities in the database.
  * The main input is a {@link SourceCriteria} which get's converted to {@link Specifications},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {%link SourceDTO} or a {@link Page} of {%link SourceDTO} which fullfills the criterias
+ * It returns a {@link List} of {%link SourceDTO} or a {@link Page} of {%link SourceDTO} which fulfills the criterias
  */
 @Service
 @Transactional(readOnly = true)
@@ -41,6 +41,7 @@ public class SourceQueryService extends QueryService<Source> {
     private final SourceMapper sourceMapper;
 
     private final SourceSearchRepository sourceSearchRepository;
+
     public SourceQueryService(SourceRepository sourceRepository, SourceMapper sourceMapper, SourceSearchRepository sourceSearchRepository) {
         this.sourceRepository = sourceRepository;
         this.sourceMapper = sourceMapper;

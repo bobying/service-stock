@@ -29,6 +29,7 @@ public class SourceService {
     private final SourceMapper sourceMapper;
 
     private final SourceSearchRepository sourceSearchRepository;
+
     public SourceService(SourceRepository sourceRepository, SourceMapper sourceMapper, SourceSearchRepository sourceSearchRepository) {
         this.sourceRepository = sourceRepository;
         this.sourceMapper = sourceMapper;

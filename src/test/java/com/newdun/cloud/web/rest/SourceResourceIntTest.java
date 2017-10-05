@@ -171,7 +171,7 @@ public class SourceResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(sourceDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Source in the database
         List<Source> sourceList = sourceRepository.findAll();
         assertThat(sourceList).hasSize(databaseSizeBeforeCreate);
     }
