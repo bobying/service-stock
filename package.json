@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "generator-jhipster": "4.7.0"
+  },
+  "dependencies": {
+    "generator-jhipster-elasticsearch-reindexer": "^1.0.1"
   }
 }
