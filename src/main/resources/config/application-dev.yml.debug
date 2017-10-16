@@ -57,12 +57,8 @@ spring:
             hibernate.cache.hazelcast.use_lite_member: true
     data:
         elasticsearch:
-            cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
+            cluster-name: docker-cluster
+            cluster-nodes: 10.31.224.228:9300
     mail:
         host: 10.31.224.228
         port: 25
