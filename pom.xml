@@ -535,6 +535,25 @@
                             </resources>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>docker-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/docker/</directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>**/*.yml</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 			<plugin>
@@ -614,6 +633,7 @@
                     <dependency>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-starter-data-jpa</artifactId>
+                        <version>${project.parent.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>javax.validation</groupId>
@@ -659,25 +679,9 @@
                 </executions>
                 -->
                 <configuration>
-                    <repository>location</repository>
+                    <repository>stock</repository>
                     <tag>latest</tag>
                     <contextDirectory>${project.build.directory}</contextDirectory>
-                </configuration>
-            </plugin>
-	    <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker-maven-plugin.version}</version>
-                <configuration>
-                    <imageName>source</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.war</include>
-                        </resource>
-                    </resources>
                 </configuration>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
