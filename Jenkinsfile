@@ -14,16 +14,6 @@ node {
         sh "./mvnw clean"
     }
 
-    stage('backend tests') {
-        try {
-            sh "./mvnw test"
-        } catch(err) {
-            throw err
-        } finally {
-            junit '**/target/surefire-reports/TEST-*.xml'
-        }
-    }
-
     stage('packaging') {
         sh "./mvnw verify -Pprod -DskipTests"
         archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
@@ -37,8 +27,13 @@ node {
     }
 
     stage('publish docker') {
-        docker.withRegistry('https://docker.eyun.online:9082', 'docker-login') {
-            dockerImage.push 'latest'
+    
+        withCredentials([usernamePassword( credentialsId: 'docker-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+	        docker.withRegistry('https://docker.eyun.online:9082', 'docker-login') {
+	            sh "docker login -u ${USERNAME} -p ${PASSWORD} https://docker.eyun.online:9082"
+	            dockerImage.push 'latest'
+	        }
         }
     }
+
 }
