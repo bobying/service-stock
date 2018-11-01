@@ -23,7 +23,7 @@ node {
     stage('build docker') {
         sh "cp -R src/main/docker target/"
         sh "cp target/*.war target/docker/"
-        dockerImage = docker.build('docker-login/source', 'target/docker')
+        dockerImage = docker.build('cloud/stock', 'target/docker')
     }
 
     stage('publish docker') {
